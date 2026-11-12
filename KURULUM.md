@@ -12,16 +12,25 @@ ilk bölüm birkaç oturum.
 3. Videoların duracağı **boş bir klasör** oluştur (ör. `Belgeler/Kanalim`). En az ~20 GB boş disk.
 
 ## 1. Plugin'i ekle (~2 dk)
-Code sekmesinde yeni oturum aç, klasör olarak az önce oluşturduğun klasörü seç. Mesaj kutusuna sırayla:
+Code sekmesinde yeni oturum aç (yerel oturum; bulut oturumunda plugin çalışmaz), klasör olarak az önce oluşturduğun klasörü seç.
+
+**Yol A: mesaj kutusundan.** Sırayla yaz:
 ```
 /plugin marketplace add emrhncvsgl/content-studio
 /plugin install content-studio@content-studio
 ```
-Uygulama bu komutları açmazsa Terminal'de aynısı (Claude Code komut satırı kuruluysa):
+Kapsam sorulursa **Install for you (user scope)** seç: plugin her klasörde hazır olur.
+Marketplace eklendikten sonra uygulamanın kendi menüsünden de kurulabilir: istem kutusunun yanındaki **+** →
+**Add plugins** (ya da **Plugins → Browse plugins**) → `content-studio` → kapsam.
+
+**Yol B: uygulamanın içindeki terminalden** (Yol A'daki komutlar açılmazsa). Oturumun başlık çubuğunda **Terminal**'e tıkla
+(ya da Ctrl+`). `claude` komutu yoksa önce Claude Code komut satırını kur, sonra plugin'i:
 ```
-claude plugin marketplace add emrhncvsgl/content-studio
-claude plugin install content-studio@content-studio
+curl -fsSL https://claude.ai/install.sh | bash
+claude plugin install content-studio --marketplace emrhncvsgl/content-studio
 ```
+Masaüstü uygulaması ve terminal aynı ayar dosyalarını okur; burada kurulan plugin uygulamada da görünür.
+
 Sonra Code sekmesinde **yeni bir oturum** aç (plugin yeni oturumda yüklenir). Mesaj kutusuna `/content` yazınca
 `content-studio:...` komutları listelenmeli.
 

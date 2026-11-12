@@ -13,9 +13,11 @@ argument-hint: "[--update]"
 Kural: **hiçbir paket onaysız kurulmaz.** Her kurulum komutunu önce göster, toplu onay al (AskUserQuestion), sonra çalıştır.
 Uzun indirmeler (torch, node_modules, Whisper modeli) arka planda; aynı anda tek ağır iş.
 
-Plugin kökü: bu dosyanın iki üst klasörü. Yolu bul:
+Plugin kökü (kurulu sürümün önbellek klasörü; `scripts/install_engine.py` içerir). Her Bash çağrısında yeniden tanımla:
 ```
-PLUGIN=$(dirname "$(dirname "$(find ~/.claude/plugins -path '*content-studio*/scripts/install_engine.py' -print -quit | xargs dirname)")")
+PLUGIN="${CLAUDE_PLUGIN_ROOT}"
+[ -f "$PLUGIN/scripts/install_engine.py" ] || PLUGIN=$(dirname "$(dirname "$(find ~/.claude/plugins/cache -path '*/content-studio/*/scripts/install_engine.py' | sort -V | tail -1)")")
+echo "$PLUGIN"
 ```
 (Kurulum yapılmışsa `.studio/plugin` zaten oraya bağlıdır.)
 

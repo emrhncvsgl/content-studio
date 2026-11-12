@@ -1,6 +1,6 @@
 {
   "name": "content-studio",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Çok ajanlı Shorts/video üretim hattı: /studio-setup ile kur, /new-channel ile kanalını aç, /shorts ile bölüm üret.",
   "author": {
     "name": "emrhncvsgl"
