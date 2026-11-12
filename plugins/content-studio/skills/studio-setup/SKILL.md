@@ -12,6 +12,11 @@ argument-hint: "[--update]"
 
 Kural: **hiçbir paket onaysız kurulmaz.** Her kurulum komutunu önce göster, toplu onay al (AskUserQuestion), sonra çalıştır.
 Uzun indirmeler (torch, node_modules, Whisper modeli) arka planda; aynı anda tek ağır iş.
+Kullanıcı çoğu zaman yazılımcı değildir: her paketi **ne işe yaradığıyla** sade Türkçe anlat (aşağıdaki "Onay ekranı").
+
+**Kaldığı yerden devam:** `.studio/engine-manifest.json` varsa motor zaten kopyalanmıştır: adım 2'yi atla (plugin sürümü
+`.studio/plugin-version`'dan yeniyse `--update` öner), adım 3'te yalnızca eksik parçaları bul (venv var mı, `studio/node_modules`
+var mı, Whisper modeli var mı) ve yalnızca onları sor. Daha önce "şimdi değil" denmiş kurulum böyle tamamlanır.
 
 Plugin kökü (kurulu sürümün önbellek klasörü; `scripts/install_engine.py` içerir). Her Bash çağrısında yeniden tanımla:
 ```
@@ -72,6 +77,26 @@ Kurulumdan ÖNCE tek AskUserQuestion turunda sor (detect önerisi ilk seçenek);
 | `kaggle` CLI | `kaggle` motor | küçük |
 Hafif kurulumda (`core-light`) eksik olan tek şey ses kimliği benzerlik ölçümüdür (synth.py uyarı verip atlar; WER, kesik
 cümle ve süre kontrolleri sürer). Sonradan yerel TTS istenirse aynı venv'e `core.txt` kurulur.
+
+**Onay ekranı** (kurulumdan hemen önce; önce kısa bir tablo yaz, sonra tek AskUserQuestion). Tablo: her satır bir parça,
+sütunlar *ne işe yarar · boyut · zorunlu mu*. Sade açıklamalar (yalnızca kurulacak olanları göster):
+| Parça | Ne işe yarar (kullanıcıya böyle anlat) |
+|---|---|
+| Homebrew / uv / Python 3.11 / Node | Diğer her şeyi kuran ve çalıştıran temel araçlar |
+| ffmpeg | Ses ve videoyu kesip birleştirir, dönüştürür; neredeyse her adım kullanır |
+| whisper.cpp + Whisper modeli | Anlatımı dinleyip yazıya döker: altyazıların kelime kelime zamanlaması ve sesin doğru okunup okunmadığının kontrolü |
+| Python ortamı (hafif) | Stüdyonun araçları: senaryo/storyboard doğrulama, ses kontrolü, miks, yayın paketi |
+| Python ortamı (tam, torch + Chatterbox) | Yukarıdakiler + anlatıcı sesini bu bilgisayarda üretmek |
+| Ses tasarımı ortamı (mlx) | Kanala özel yeni bir anlatıcı sesini yazılı tariften tasarlamak |
+| Remotion (npm) | Videoyu kodla çizen ve MP4 olarak çıkaran motor; render için şart |
+| Fontlar | Altyazı ve başlık yazı tipleri (açık lisanslı), internetsiz render için |
+| Kaggle CLI | Sesi ücretsiz bulut GPU'sunda üretmek için |
+| matte / manim / sam2 | İsteğe bağlı: fotoğraftan nesne kesme / bilim animasyonu / videodan nesne maskesi |
+Tablonun altında toplam indirme ve tahmini süre. Sonra seçenekler:
+1. **Hepsini kur (Önerilen)**: listedeki her şey; arka planda, bu sırada bilgisayar kullanılabilir.
+2. **Yalnızca zorunlular**: isteğe bağlı araçlar ve ses tasarımı ortamı hariç.
+3. **Şimdi değil**: hiçbir şey kurulmaz; kanal kurulumu ve video üretimi bunlar olmadan çalışmaz. Sonra
+   `/content-studio:studio-setup` kaldığı yerden devam eder.
 
 Komutlar (uv yoksa `python3.11 -m venv` + pip; adı her durumda `.venv-chatterbox`, araçlar bu yolu bekler):
 ```
