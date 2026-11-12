@@ -8,7 +8,10 @@ description: >
 
 # Görsel stiller ve render
 
-Stil talimatları: `.studio/plugin/skills/remotion-styles/<id>.md` (varsa; şu an `vox-explainer.md`) — o stil bir sahneye atanınca okunur ve adım adım uygulanır (sert kurallar, tarif JSON'ları, çeşitlilik tablosu). Öğretici anlatım kullanıcı için `docs/styles/<id>.md`. Stile özellik eklenince ikisi de aynı turda güncellenir. Karışım: `catalog/styles.yaml → mix_with`.
+Stil talimatları: önce projede `docs/styles/guides/<id>.md` (kullanıcının kendi kurduğu ya da uyarladığı stiller; varsa bu geçerlidir),
+yoksa plugin'deki `.studio/plugin/skills/remotion-styles/<id>.md`. **Plugin klasörüne asla yazma** (`.studio/plugin/` salt okunur,
+her güncellemede yeniden kurulur): plugin'deki bir talimatı kanal için değiştirmek gerekirse önce `docs/styles/guides/<id>.md`'ye
+kopyala, orada düzenle — o stil bir sahneye atanınca okunur ve adım adım uygulanır (sert kurallar, tarif JSON'ları, çeşitlilik tablosu). Öğretici anlatım kullanıcı için `docs/styles/<id>.md`. Stile özellik eklenince ikisi de aynı turda güncellenir. Karışım: `catalog/styles.yaml → mix_with`.
 Stilden bağımsız **kamera dili**: `.studio/plugin/skills/remotion-styles/camera.md` (eğriler, log zoom, ağır yakınlaşma, odak, geçiş süreleri;
 öğretici `docs/styles/camera.md`). Her sahnede kamera ve geçiş değerleri buradan.
 Stilden bağımsız teknik talimatı: **derinlik ve elementler** `.studio/plugin/skills/remotion-styles/depth-elements.md` (her sahnede arka/orta/ön

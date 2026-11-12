@@ -34,7 +34,9 @@ voice/.venv-chatterbox/bin/python tools/ref_study.py <URL|dosya> --slug <stil>-<
 - `docs/styles/_TEMPLATE.md`'yi `docs/styles/<id>.md` olarak doldur. Lemo `STYLE.md` + 2-5 analysis.md birleşir. Çelişkide
   kanal kuralları (`CLAUDE.md`, memory: efektler içeriğe hizmet eder, kamu malı tercih, kanal müziği) kazanır.
 - §0 stil promptu İngilizce ve kendi başına yeterli olsun. Plugin'e taşınınca stil tek dosyadan çağrılacak.
-- Ajan talimatı `.studio/plugin/skills/remotion-styles/<id>.md`: `vox-explainer.md` düzeninde (0 sert kurallar, 1 adımlar, 2 tarifler, 3 çeşitlilik tablosu…).
+- Ajan talimatı **projede** `docs/styles/guides/<id>.md` (plugin klasörü `.studio/plugin/` salt okunurdur, güncellemede silinir):
+  `.studio/plugin/skills/remotion-styles/vox-explainer.md` düzeninde (0 sert kurallar, 1 adımlar, 2 tarifler, 3 çeşitlilik tablosu…).
+  Katalog kaydında `guide: docs/styles/guides/<id>.md`.
 - `catalog/styles.yaml`: kayıt ya da güncelleme (`implemented`, `mix_with`). Sonra `tools/validate.py`.
 
 ## 5. Dene

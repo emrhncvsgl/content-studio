@@ -21,6 +21,8 @@ Kararlar ve test sonuçları (en yenisi üstte): [docs/DECISIONS.md](docs/DECISI
 - Her görsel/ses varlığı lisansıyla `assets.csv`'ye yazılır; yalnızca `channel.yaml assets.allowed_sources`.
 - Sözleşme dosyaları (brief, script) yazılınca `tools/validate.py` çalıştırılır.
 - Öğrenilen her kural kanal dosyasına (`channel.yaml design`/kurallar) ya da DECISIONS.md'ye yazılır; yalnızca hafızada kalmaz.
+- `.studio/plugin/` salt okunurdur (plugin güncellemesinde yeniden kurulur). Kendi stillerin ve uyarladığın stil talimatları
+  `docs/styles/guides/<id>.md`'de (plugin'dekinden önce okunur), kodları `studio/src/styles/<id>/`, kayıtları `catalog/styles.yaml`'da.
 
 ## Yapı
 - `channel.yaml` kanal ayarları ve tasarım dili · `catalog/` stiller, duygular, telaffuz · `content/` kaynak kayıtları, bölümler, marka

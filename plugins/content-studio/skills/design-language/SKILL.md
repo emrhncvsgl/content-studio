@@ -88,8 +88,8 @@ Seçimlerle tek sahnelik bir deneme kur: ana stil + bir imza kamera hareketi + b
 - Ana stil `✓` ise mevcut bileşenle `content/channels/<id>/design/` altında küçük bir timeline/kompozisyon yaz, render et
   (`npx remotion render ... --frames=0-239`); ağır iş, önce kullanıcıya sor.
 - Ana stil yalnızca tarifse: önce `.studio/plugin/skills/style-study/SKILL.md` akışıyla tarifi `studio/src/styles/<id>/`
-  bileşenine çevir (`docs/styles/<id>.md` + `.studio/plugin/skills/remotion-styles/<id>.md` eşdeğerini projede `docs/styles/` altına
-  yaz), sonra klibi al. Bu uzun bir iştir; kullanıcıya süreyi söyle ve onay al.
+  bileşenine çevir (öğretici `docs/styles/<id>.md` + ajan talimatı `docs/styles/guides/<id>.md`, ikisi de projede; plugin
+  klasörüne yazma), sonra klibi al. Bu uzun bir iştir; kullanıcıya süreyi söyle ve onay al.
 Örnek kompozisyonları (`studio/src/Root.tsx`) varsayılan prop'larıyla render etme: varsayılanlar başka bir kanalın bölümlerini
 gösterir, yeni kurulumda yoktur. Deneme klibi kendi `content/channels/<id>/design/` dosyalarıyla, `--props` ile alınır.
 Klibi kullanıcıya göster (telefonda izleyecekse SendUserFile). Beğenmediği eksene geri dön, yalnızca onu değiştir.
