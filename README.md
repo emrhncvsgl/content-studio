@@ -50,7 +50,7 @@ yeni sürümü yanına `.yeni` olarak koyar ve birleştirmeyi önerir.
 | `plugins/content-studio/engine/` | Projeye kopyalanan motor: `tools/` (Python araçları), `voice/` (ses hattı, Kaggle/Colab), `studio/` (Remotion, 13 stil, geçişler, altyazılar, editör), `catalog/` |
 | `plugins/content-studio/library/lemo/` | Lemo-Opuscar stil tarifleri ve demo kodu (~67 stil, MIT sürümü) |
 | `plugins/content-studio/library/cinecode/` | cinecode kamera/geçiş sözlüğü, görünüm aileleri, Türkçe denenmiş font eşleşmeleri, ses ve yazım referansları (MIT) |
-| `plugins/content-studio/scripts/` | `detect_system.py`, `install_engine.py`, `design_menu.py`, venv gereksinimleri |
+| `plugins/content-studio/scripts/` | `detect_system.py`, `install_engine.py`, `design_menu.py` (stil arama), `style_board.py` (aday panosu), venv gereksinimleri |
 
 Adım adım rehber (sıfırdan ilk videoya): [KURULUM.md](KURULUM.md).
 Lisans: MIT ([LICENSE](LICENSE)). Üçüncü taraf lisansları: [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

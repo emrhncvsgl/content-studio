@@ -36,10 +36,28 @@ Kullanıcının beğendiği bir video varsa `/content-studio:style-study` ile ö
 Her seçeneğin açıklamasına **ne hissettirdiğini** bir cümleyle yaz (camera-moves.md "What the viewer feels" sütunu). Teknik ad +
 Türkçe karşılık birlikte (kullanıcı terimleri öğrenmek istiyor olabilir).
 
-**Tur A: Görünüş**
-1. *Ana stil (hero)*: kanala uyan 3-4 aday; en az biri `✓` (hemen başlanabilir). Lemo/cinecode tarifleri de aday olabilir.
-2. *Karışabilenler (mix)*: ana stilin `mix_with` listesinden (catalog/styles.yaml), multiSelect.
-3. *Görünüm ailesi*: cinecode 8 aileden (`families`) biri; ışık/ton/tane kararını verir.
+**Tur A: Görünüş** (cinecode yöntemi: aramayla bul, birbirine benzemeyen adaylar, gözle seç)
+1. *Adayları bul*: kanalın `about`/`tone`/`audience` ve kullanıcının referanslarından 4-8 **İngilizce** anahtar kelime çıkar
+   (konu, duygu, malzeme, dönem; ör. "charity hands community warm craft"). Kullanıcı bir ad verdiyse ("Vox gibi", "Ghibli")
+   onu da kat (takma adlar eşlenir). Sonra:
+   ```
+   python3 .studio/plugin/scripts/design_menu.py looks --q "<kelimeler>" --pick 4
+   ```
+   Çıkan 4 aday farklı ailelerden gelir ve en az biri hazırdır (`✓`). Yalnızca hazır stillerle yetinme: tarifler (`·`) kanala daha
+   özgün bir görünüş verebilir; maliyeti dürüstçe söyle (ilk kullanımda bileşeni yazılır, ~1-2 saat). Uymayan adayı
+   `--q`'yu değiştirerek ya da `design_menu.py looks --q ...` (25 sonuç) listesinden elle değiştir; aynı aileden iki aday koyma.
+2. *Panoyu göster* (yazıyla değil, gözle seçilir):
+   ```
+   voice/.venv-chatterbox/bin/python .studio/plugin/scripts/style_board.py <id1> <id2> <id3> <id4> \
+       --out content/channels/<id>/design/board.jpg --title "<kanal>: görünüş adayları"
+   ```
+   Görseli kullanıcıya göster (Read ile kendin de bak; telefondaysa SendUserFile). Her aday için bir cümle: neye benzer, bu kanala
+   neden uyar, hazır mı tarif mi. Sonra AskUserQuestion: A/B/C/D (+ "hiçbiri, başka yön"). Posterler yalnızca görüntüleme içindir
+   (Lemo'nun deposundan, MIT sürümü), videoda kullanılmaz.
+3. *Seçilen tarifi oku* (yalnızca o): `recipe` yolu (`STYLE.md`); hazır stilse `.studio/plugin/skills/remotion-styles/<id>.md`.
+   Renk mantığı, malzeme, hareket kalitesi ve kamera buradan Tur B-C'ye taşınır.
+4. *Karışabilenler (mix)*: hazır stilde `catalog/styles.yaml mix_with`; tarifte STYLE.md'nin önerdiği eşlikler. multiSelect.
+5. *Görünüm ailesi*: cinecode 8 aileden (`families`) biri; tarifin `family` alanı varsa onu öner. Işık/ton/tane kararını verir.
 
 **Tur B: Kamera ve kurgu**
 1. *Kamera enerjisi*: `calm` (yavaş dolly, uzun plan, ease-in-out) · `measured` (karışık, nedenli hareket) · `energetic` (whip, hızlı

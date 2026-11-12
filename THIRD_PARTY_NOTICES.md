@@ -10,6 +10,8 @@
 - Lemo-Opuscar 2.0.0 ve sonrası (stil tarifleri CC BY-NC 4.0) bu repoda **yoktur**. İsteyen kişi Lemo'nun kendi plugin'ini kurar
   (`/plugin marketplace add lemomo-ai/lemo-opuscar`); o tarifler yalnızca kendi filmleri için kullanılabilir.
 - Değiştirildi: `SECKI.md` bu stüdyonun seçki notudur (Türkçe).
+- Posterler repoda yoktur. `scripts/style_board.py` aday panosu için posteri, gerektiğinde Lemo'nun kendi deposundan
+  (commit `8814b84`) yalnızca yerelde görüntülemek üzere indirir; videoda kullanılmaz.
 
 ## cinecode (`plugins/content-studio/library/cinecode/`)
 - Kaynak: https://github.com/sarpstar/cinecode, commit `COMMIT` dosyasında. Telif: Sarp Yıldız. Lisans: **MIT** (`LICENSE`).
