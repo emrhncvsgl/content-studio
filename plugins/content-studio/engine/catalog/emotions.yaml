@@ -1,0 +1,10 @@
+# Duygu → ses parametreleri (PLAN 6.3, başlangıç değerleri, kulakla ayarlanacak)
+# intensity (0-1) exaggeration'ı ölçekler: exag = exaggeration * (0.6 + 0.8 * intensity); 0.5 → ×1.0
+# Turbo yalnızca etiket kullanır; Std/Mtl exaggeration + cfg_weight kullanır.
+# VoxCPM2 yalnızca 'instruct' kullanır (metnin başına "(instruct)" olarak eklenir).
+calm:     { exaggeration: 0.35, cfg_weight: 0.5, turbo_tag: null,        instruct: "calm, measured documentary narration" }
+curious:  { exaggeration: 0.5,  cfg_weight: 0.5, turbo_tag: null,        instruct: "curious, intrigued documentary narration, deliberate pace" }
+excited:  { exaggeration: 0.75, cfg_weight: 0.3, turbo_tag: "[chuckle]", instruct: "excited, energetic but controlled narration" }
+dramatic: { exaggeration: 0.9,  cfg_weight: 0.3, turbo_tag: "[sigh]",    instruct: "dramatic, emphatic documentary narration, slower pace" }
+serious:  { exaggeration: 0.4,  cfg_weight: 0.6, turbo_tag: null,        instruct: "serious, clear and authoritative narration" }
+playful:  { exaggeration: 0.7,  cfg_weight: 0.4, turbo_tag: "[laugh]",   instruct: "warm, friendly and lightly playful tone" }

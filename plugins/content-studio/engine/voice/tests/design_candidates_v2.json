@@ -1,0 +1,13 @@
+{
+  "note": "Tur 2 (2026-10-22): Chatterbox'ın daha temiz klonlayacağı referans arayışı. Kanal tonu: merak uyandıran, sade, belgesel; abartısız. Tahmin: çok pes, hırıltılı/nefesli sesler (A, D) Chatterbox'ın vokoderini (HiFT, perde güdümlü) zorluyor; bu yüzden pürüzsüz, nefessiz, orta-pes, temiz stüdyo kaydı tarif edildi. Metin tur 1 ile aynı (kıyas için).",
+  "language": "English",
+  "text": "In nineteen forty-six, a young patent clerk noticed something strange. The world's greatest inventions were not random strokes of genius. They followed hidden patterns. Patterns that anyone could learn. So what if the secret to innovation was hiding in plain sight?",
+  "candidates": [
+    {"id": "F_clear_baritone",  "instruct": "Male narrator in his forties, warm baritone, medium-low pitch, smooth and clear voice with no rasp, no vocal fry and no breathiness, steady confident delivery, modern science documentary tone, crisp diction, clean studio recording."},
+    {"id": "G_curious_explainer","instruct": "Male narrator in his thirties, medium pitch, friendly and bright, genuinely curious and engaging like a popular science explainer, clear articulation, moderate pace, smooth clean voice, clean studio recording."},
+    {"id": "H_calm_authority",  "instruct": "Male narrator in his fifties, low-medium pitch, rich but smooth voice without gravel or rasp, calm authoritative documentary tone, measured pace, clear diction, clean studio recording."},
+    {"id": "I_warm_storyteller","instruct": "Male storyteller in his forties, warm medium-low voice, intimate and engaging, a subtle smile in the voice, natural conversational documentary pace, clear diction, no breathiness, clean studio recording."},
+    {"id": "J_female_doc",      "instruct": "Female documentary narrator in her thirties, medium-low pitch, warm, clear and confident, curious science documentary tone, crisp diction, smooth clean voice, clean studio recording."},
+    {"id": "K_british_doc",     "instruct": "British male narrator in his forties, medium-low pitch, smooth and articulate, thoughtful and curious, classic British science documentary tone, measured pace, clean studio recording."}
+  ]
+}

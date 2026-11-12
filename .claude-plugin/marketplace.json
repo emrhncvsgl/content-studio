@@ -1,0 +1,12 @@
+{
+  "name": "content-studio",
+  "owner": { "name": "emrhncvsgl" },
+  "metadata": { "description": "Yerelde çalışan çok ajanlı Shorts/video üretim stüdyosu (Remotion + yerel/bulut TTS)." },
+  "plugins": [
+    {
+      "name": "content-studio",
+      "source": "./plugins/content-studio",
+      "description": "Röportajdan yayına video hattı: senaryo, ses, storyboard, Remotion render; kanal ve tasarım dili kurucusu."
+    }
+  ]
+}

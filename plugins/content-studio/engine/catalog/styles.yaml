@@ -1,0 +1,198 @@
+# Stil kataloğu (PLAN Ek A'nın makine okunur hali). Kanaldan bağımsız.
+# kind: code = görsel Remotion'da React/SVG ile çizilir · photo = lisanslı fotoğraf/arşiv görseli · type = tipografi ağırlıklı · mixed
+# lang_neutral: true = ekrana dile bağlı yazı basmaz (MLA için uygun) · partial = sayı/simge basar · false = dil bağımlı yazı basar
+# difficulty: K (kolay) / O (orta) / Z (zor) — Remotion yapım zorluğu
+# implemented: studio/src/styles/<id>/ altında bileşen var mı (Faz 2+ ile güncellenir)
+# mix_with: aynı videoda (sahneler arası) ya da aynı sahnede (öğe ödünç alarak) uyumlu karışan stiller. guide: ajan uygulama talimatı (kurallar, adımlar, tarif JSON'ları) · learn: kullanıcı için öğretici anlatım
+
+styles:
+  manim:             { name: { tr: "Manim fizik animasyonu", en: "Manim science animation" }, kind: code, lang_neutral: partial, difficulty: O, implemented: true,
+                       does: "3Blue1Brown tarzı matematik/fizik animasyonu: grafik, vektör, dalga, parçacık; Manim CE ile ayrı render edilip Remotion'a video olarak gömülür", use_when: "Bir mekanizmanın fiziğini öğretmek (basınç dalgası, kuvvet, akış)", ref: "Manim Community (MIT)", needs: "tools/.venv-manim", mix_with: [vox-explainer, blueprint-diagram, kinetic-type] }
+  kinetic-type:      { name: { tr: Hareketli tipografi, en: Kinetic typography }, kind: type, lang_neutral: false, difficulty: K, implemented: true,
+                       does: "Kelimeler ritimle ekranda hareket eder, ana görsel yazıdır", use_when: "Tek cümlelik prensip vurgusu, hook", mix_with: [vox-explainer, swiss-minimal, cinematic-dark, data-viz] }
+  blueprint-diagram: { name: { tr: Teknik çizim, en: Blueprint }, kind: code, lang_neutral: true, difficulty: O, implemented: true,
+                       does: "Mavi zemin, ince çizgi, ölçü okları, patent çizimi estetiği", use_when: "Soyut prensip, mekanizma", ref: "lemo-opuscar: Blueprint", mix_with: [vox-explainer, exploded-teardown, engineering-board, archival-film] }
+  whiteboard-doodle: { name: { tr: Beyaz tahta çizimi, en: Doodle explainer }, kind: code, lang_neutral: true, difficulty: O, implemented: false,
+                       does: "Elle çiziliyormuş gibi beliren çizimler", use_when: "Adım adım açıklama", ref: "lemo-opuscar: Whiteboard Explainer", mix_with: [notebook-sticky, paper-collage, kinetic-type] }
+  flat-vector:       { name: { tr: Düz vektör illüstrasyon, en: Flat vector motion graphics }, kind: code, lang_neutral: true, difficulty: O, implemented: false,
+                       does: "Canlı renkli, gölgesiz şekiller ve karakterler", use_when: "Genel anlatım, sosyal kitle", mix_with: [pictogram-motion, data-viz, kinetic-type, isometric] }
+  isometric:         { name: { tr: İzometrik 3D, en: Isometric }, kind: code, lang_neutral: true, difficulty: Z, implemented: false,
+                       does: "30° açılı, 3D hissi veren sistem çizimleri", use_when: "Sistem/parça ilişkisi", ref: "lemo-opuscar: Isometric Infographic", mix_with: [exploded-teardown, flat-vector, data-viz, low-poly-island] }
+  data-viz:          { name: { tr: Veri görselleştirme, en: Animated infographics }, kind: code, lang_neutral: partial, difficulty: O, implemented: false,
+                       does: "Animasyonlu grafik, sayaç, tablo", use_when: "Patent sayıları, istatistik", ref: "lemo-opuscar: Data Storytelling", mix_with: [vox-explainer, data-physicalization, swiss-minimal, halftone-dossier] }
+  ken-burns-photo:   { name: { tr: Fotoğraf hareketi, en: Ken Burns }, kind: photo, lang_neutral: true, difficulty: K, implemented: true,
+                       does: "Fotoğraf üzerinde yavaş yakınlaşma/kaydırma; props.cuts ile sahne içi görsel değişimi", use_when: "Buluş hikâyesi, tarihçe", mix_with: [archival-film, vox-explainer, layered-collage, archive-light-table] }
+  archival-film:     { name: { tr: Arşiv film, en: Archival look }, kind: photo, lang_neutral: true, difficulty: O, implemented: true,
+                       does: "Sakin eski fotoğraf (varsayılan): sepya, kontrast, vinyet, ince tane; titreme/kayma yok. props.film: strong = titreyen film (titreme, kayma, çizik). props.cuts ile sahne içi görsel değişimi", use_when: "Tarihî vaka", mix_with: [vox-explainer, ken-burns-photo, layered-collage, newsreel-1920s, silent-film-1920s] }
+  paper-collage:     { name: { tr: Kağıt kesme kolaj, en: Cut-out collage }, kind: mixed, lang_neutral: true, difficulty: O, implemented: false,
+                       does: "Karton kesikleri, hafif gölge, stop-motion hissi", use_when: "Eğlenceli/sosyal anlatım", note: "vox-explainer ile yapılır: piece + cutout + stepFps/boil (docs/styles/vox-explainer.md)", mix_with: [vox-explainer, stop-motion, layered-collage, halftone-dossier, paper-popup-book] }
+  vox-explainer:     { name: { tr: "Vox tarzı açıklayıcı", en: "Vox-style explainer" }, kind: mixed, lang_neutral: true, difficulty: O, implemented: true,
+                       does: "Renkli düz zemin + siyah-beyaz kesilmiş arşiv fotoğrafı, belge/ekran görüntüsü yakınlaştırma, fosforlu kalem, elle daire ve ok, harita, kâğıt ve tane dokusu", use_when: "Kanıtlarla açıklama: tarih, bilim, 'neden böyle?'", ref: "Vox Media açıklayıcı videoları (tarz adı; marka ve logo kullanılmaz)", needs: "cutout (rembg), annotate, docscan", guide: .studio/plugin/skills/remotion-styles/vox-explainer.md, learn: docs/styles/vox-explainer.md, aka: "kâğıt kolaj belgesel anlatım (documentary explainer + paper collage + tabletop)", status: "2026-10-26: doc, cutout, piece, annotate, title, tag, dust katmanları; 2.5D kamera, ışık, stop-motion (stepFps/boil/wobble), halftone, blur geçiş. Tabletop yüzeyi ve masa objeleri henüz yok", mix_with: [archival-film, ken-burns-photo, layered-collage, blueprint-diagram, halftone-dossier, data-viz, visual-investigation, archive-light-table, kinetic-type] }
+  layered-collage:   { name: { tr: "Katmanlı kolaj (2.5D)", en: "Layered 2.5D collage" }, kind: mixed, lang_neutral: true, difficulty: Z, implemented: false,
+                       does: "Arşiv/kesilmiş görseller katmanlara ayrılır (ön plan yaprak, orta plan nesne/kişi, arka plan şehir); paralaks, ön plan silmesi, içinden geçme geçişleri, sıcak eski renk, kâğıt dokusu", use_when: "Dönem anlatımı, buluş hikâyesi, 'zamanda geri dön' açılışı; uzun video", ref: "örnek: aymaned1ts, Kahire 1940'lar (docs/style-atlas.html)", needs: "rembg/SAM 2 kesme (tools/.venv-matte, tools/matte_video.py), çok katmanlı CutoutClip", mix_with: [vox-explainer, archival-film, paper-collage, tilt-shift-miniature] }
+  split-screen:      { name: { tr: Bölünmüş ekran, en: Split screen }, kind: mixed, lang_neutral: true, difficulty: K, implemented: false,
+                       does: "İki yarı yan yana: önce/sonra, sorun/çözüm", use_when: "Çelişki ve çözüm karşılaştırması", ref: "lemo-opuscar: Live Countdown Split-screen", mix_with: [vox-explainer, archival-film, data-viz, blueprint-diagram] }
+  chat-ui:           { name: { tr: Mesajlaşma arayüzü, en: Text-message story }, kind: type, lang_neutral: false, difficulty: K, implemented: false,
+                       does: "Sohbet balonlarıyla anlatım", use_when: "Diyalog, yanlış anlama örnekleri", mix_with: [kinetic-type, living-screencast, neo-brutalism] }
+  notebook-sticky:   { name: { tr: Defter ve not kâğıdı, en: Notebook / sticky notes }, kind: type, lang_neutral: false, difficulty: O, implemented: false,
+                       does: "Kareli defter, yapışkan notlar, el yazısı", use_when: "Beyin fırtınası, adımlar", mix_with: [whiteboard-doodle, paper-collage, vox-explainer] }
+  swiss-minimal:     { name: { tr: İsviçre minimalizmi, en: Swiss / Bauhaus typography }, kind: type, lang_neutral: false, difficulty: K, implemented: false,
+                       does: "Sade, geometrik, güçlü hizalama, 2-3 renk", use_when: "Ciddi, kurumsal ton", ref: "lemo-opuscar: Swiss Motion Graphics", mix_with: [kinetic-type, data-viz, pictogram-motion, constructivist-montage] }
+  neo-brutalism:     { name: { tr: Neo-brütalizm, en: Neo-brutalism }, kind: type, lang_neutral: false, difficulty: K, implemented: false,
+                       does: "Kalın çerçeve, sert gölge, parlak renk blokları", use_when: "Genç/enerjik ton", mix_with: [kinetic-type, game-show-flat, chat-ui] }
+  glass-ui:          { name: { tr: Cam arayüz, en: Glassmorphism }, kind: code, lang_neutral: false, difficulty: O, implemented: false,
+                       does: "Bulanık yarı saydam paneller", use_when: "Teknoloji/ürün konusu", mix_with: [dark-tech-keynote, hologram-hud, glass-product-render] }
+  terminal-crt:      { name: { tr: Terminal / retro CRT, en: Retro CRT }, kind: type, lang_neutral: false, difficulty: O, implemented: false,
+                       does: "Yeşil/amber metin, tarama çizgileri", use_when: "Teknik / 'hacker' hissi", ref: "lemo-opuscar: ASCII / CRT Terminal", mix_with: [living-screencast, liminal-found-footage, pixel-art] }
+  trading-card:      { name: { tr: Koleksiyon kartı, en: Card flip }, kind: code, lang_neutral: partial, difficulty: O, implemented: false,
+                       does: "Konu bir kart gibi çevrilir (numara, simge, ad)", use_when: "Seri giriş/kapanış", mix_with: [vox-explainer, comic-panel, halftone-dossier] }
+  comic-panel:       { name: { tr: Çizgi roman paneli, en: Comic panels }, kind: mixed, lang_neutral: false, difficulty: O, implemented: false,
+                       does: "Paneller, konuşma balonları, nokta tonlama", use_when: "Mizahi örnek", mix_with: [halftone-dossier, risograph, paper-collage, trading-card] }
+  pixel-art:         { name: { tr: Piksel sanat, en: 8-bit }, kind: code, lang_neutral: true, difficulty: O, implemented: false,
+                       does: "Düşük çözünürlüklü, oyun estetiği", use_when: "Nostaljik/eğlenceli", ref: "lemo-opuscar: 16-bit Pixel RPG", mix_with: [microgame-frenzy, hd-2d, terminal-crt] }
+  cinematic-dark:    { name: { tr: Sinematik koyu, en: Low-key cinematic }, kind: code, lang_neutral: true, difficulty: O, implemented: false,
+                       does: "Koyu zemin, vurgulu ışık, parçacıklar", use_when: "Dramatik hook/kapanış", mix_with: [kinetic-type, archival-film, microscope-story, dark-tech-keynote] }
+  stop-motion:       { name: { tr: Dur-kaydır, en: Stop-motion look }, kind: mixed, lang_neutral: true, difficulty: Z, implemented: false,
+                       does: "Düşük kare hızı, el yapımı doku", use_when: "Zanaat, el işi benzetmeleri", mix_with: [paper-collage, vox-explainer, brick-toy, paper-popup-book] }
+  hybrid:            { name: { tr: Karma, en: Hybrid }, kind: mixed, lang_neutral: varies, difficulty: O, implemented: false,
+                       does: "Sahne bazında yukarıdakilerden karışım", use_when: "Uzun/karma anlatım", mix_with: [vox-explainer, archival-film, ken-burns-photo, kinetic-type] }
+  # Lemo-Opuscar stilleri (github.com/lemomo-ai/lemo-opuscar; kod ve dokümanlar MIT, demo filmleri CC BY 4.0).
+  # 2026-10-26 kataloğa eklendi; tanımlar styles/<stil>/STYLE.md'de. Henüz hiçbiri yapılmadı. Yaparken kanalın renk ve tipografisine
+  # uyarla; demo görsellerini ve seslerini kopyalama. Bizdeki 8 karşılığı (blueprint-diagram, whiteboard-doodle, isometric, data-viz,
+  # swiss-minimal, terminal-crt, pixel-art, split-screen) yukarıda ref alanıyla işaretli. Zorluk tahmini (doğrulanmadı).
+  caption-news: { name: { tr: "Altyazılı haber", en: "Caption News" }, kind: type, lang_neutral: false, difficulty: K, implemented: false,
+                       does: "Ses kapalı izlenebilen haber kısası: büyük başlıklar, kayan bantlar", use_when: "Hızlı bilgi, haber tadında buluş", ref: "lemo-opuscar: Caption News", mix_with: [broadcast-news, archival-film, kinetic-type] }
+  newsreel-1920s: { name: { tr: "1920'ler haber filmi", en: "1920s Newsreel" }, kind: photo, lang_neutral: partial, difficulty: O, implemented: false,
+                       does: "Dönem haber filmi: ara kartlar, anlatıcı tonu, arşiv görüntüsü", use_when: "Tarihî olay, buluşun ilk duyuruluşu", ref: "lemo-opuscar: 1920s Newsreel", mix_with: [archival-film, silent-film-1920s, vox-explainer] }
+  timelapse-symphony: { name: { tr: "Zaman atlama senfonisi", en: "Time-lapse Symphony" }, kind: code, lang_neutral: true, difficulty: Z, implemented: false,
+                       does: "Bir günü ışık ve ızgaralarla hızlandırılmış anlatım", use_when: "Değişim, süreç, yayılma", ref: "lemo-opuscar: Time-lapse Symphony", mix_with: [tilt-shift-miniature, cinematic-dark, data-viz] }
+  visual-investigation: { name: { tr: "Görsel soruşturma", en: "Visual Investigation" }, kind: mixed, lang_neutral: partial, difficulty: Z, implemented: false,
+                       does: "Kaza ya da olayı görüntü, foto ve tanıklıkla yeniden kurma", use_when: "Başarısız buluşlar, felaketler, mühendislik hataları", ref: "lemo-opuscar: Visual Investigation", mix_with: [vox-explainer, satellite-briefing, archive-light-table, halftone-dossier] }
+  constructivist-montage: { name: { tr: "Konstrüktivist montaj", en: "Constructivist Montage" }, kind: mixed, lang_neutral: partial, difficulty: O, implemented: false,
+                       does: "Sovyet afişi estetiği, iddia ile kanıtın karşılaştırılması", use_when: "Büyük yapılar, propaganda ↔ gerçek", ref: "lemo-opuscar: Constructivist Montage", mix_with: [risograph, silkscreen-poster, kinetic-type, halftone-dossier] }
+  sports-telestrator: { name: { tr: "Telestratör çizimi", en: "Sports Telestrator" }, kind: code, lang_neutral: partial, difficulty: O, implemented: false,
+                       does: "Dondurulmuş kare üstüne çizim, ok ve iz haritası", use_when: "Mekanizma hareketini adım adım göstermek", ref: "lemo-opuscar: Sports Telestrator", mix_with: [vox-explainer, visual-investigation, blueprint-diagram] }
+  broadcast-news: { name: { tr: "Haber bülteni paketi", en: "Broadcast News Package" }, kind: type, lang_neutral: false, difficulty: O, implemented: false,
+                       does: "Stüdyo bülteni grafikleri: alt bant, logo, geçiş", use_when: "Seri bülten, haftalık buluş özeti", ref: "lemo-opuscar: Broadcast News Package", mix_with: [caption-news, satellite-briefing, data-viz] }
+  satellite-briefing: { name: { tr: "Uydu brifingi", en: "Satellite Briefing" }, kind: photo, lang_neutral: partial, difficulty: O, implemented: false,
+                       does: "Uydu görüntüsüyle önce/sonra ve ölçek", use_when: "Coğrafya, büyük ölçekli değişim", ref: "lemo-opuscar: Satellite Briefing", mix_with: [visual-investigation, data-viz, hologram-hud] }
+  engineering-board: { name: { tr: "Mühendislik panosu", en: "Engineering Briefing Board" }, kind: code, lang_neutral: partial, difficulty: O, implemented: false,
+                       does: "Tek duvarda birkaç tasarımın yan yana kıyası", use_when: "Çözüm seçeneklerini karşılaştırmak (TRIZ çelişkileri)", ref: "lemo-opuscar: Engineering Briefing Board", mix_with: [blueprint-diagram, exploded-teardown, archive-light-table, vox-explainer] }
+  lidar-survey: { name: { tr: "LiDAR taraması", en: "LiDAR Survey" }, kind: code, lang_neutral: true, difficulty: Z, implemented: false,
+                       does: "Nokta bulutu taramasıyla gizli yapıyı ortaya çıkarma", use_when: "Arkeoloji, ölçüm teknolojisi", ref: "lemo-opuscar: LiDAR Survey", mix_with: [projection-model, hologram-hud, satellite-briefing] }
+  projection-model: { name: { tr: "Beyaz maket üzerine projeksiyon", en: "Projection on White Model" }, kind: code, lang_neutral: true, difficulty: Z, implemented: false,
+                       does: "Beyaz şehir/nesne maketine zamanla renk ve veri yansıtma", use_when: "Bir sistemin zaman içinde değişimi", ref: "lemo-opuscar: Projection on White Model", mix_with: [lidar-survey, data-physicalization, tilt-shift-miniature] }
+  data-physicalization: { name: { tr: "Veriyi nesneleştirme", en: "Data Physicalization" }, kind: code, lang_neutral: partial, difficulty: Z, implemented: false,
+                       does: "Veriyi üst üste dizilen fiziksel plakalar gibi göstermek", use_when: "Enerji, üretim, sayılar", ref: "lemo-opuscar: Data Physicalization", mix_with: [data-viz, projection-model, vox-explainer] }
+  exploded-teardown: { name: { tr: "Patlatılmış söküm", en: "Exploded Teardown" }, kind: code, lang_neutral: true, difficulty: Z, implemented: false,
+                       does: "Nesnenin parçalara ayrılıp yeniden birleşmesi", use_when: "Bölümleme prensibi, nasıl çalışır", ref: "lemo-opuscar: Exploded Teardown", mix_with: [blueprint-diagram, isometric, engineering-board, glass-product-render] }
+  microscope-story: { name: { tr: "Mikroskop hikâyesi", en: "Microscope Story" }, kind: mixed, lang_neutral: partial, difficulty: O, implemented: false,
+                       does: "Büyütme katmanlarıyla içeri yolculuk, ölçek çubuğu", use_when: "Malzeme bilimi, biyoloji", ref: "lemo-opuscar: Microscope Story", mix_with: [cinematic-dark, blueprint-diagram, vox-explainer] }
+  archive-light-table: { name: { tr: "Arşiv ışık masası", en: "Archive Light Table" }, kind: photo, lang_neutral: partial, difficulty: O, implemented: false,
+                       does: "Negatifler ve belgeler ışık masasında karşılaştırılır", use_when: "Tarihî iddiaları belgeyle doğrulamak (kanalın kaynak titizliği)", ref: "lemo-opuscar: Archive Light Table", mix_with: [vox-explainer, archival-film, visual-investigation, engineering-board] }
+  crayon-picture-book: { name: { tr: "Pastel boya resimli kitap", en: "Crayon Picture Book" }, kind: code, lang_neutral: true, difficulty: O, implemented: false,
+                       does: "Çocuk kitabı pastel boya dokusu", use_when: "Çocuk dostu buluş hikâyesi", ref: "lemo-opuscar: Crayon Picture Book", mix_with: [paper-popup-book, watercolor-brush, stop-motion] }
+  watercolor-brush: { name: { tr: "Suluboya fırça", en: "Watercolor Brush" }, kind: code, lang_neutral: true, difficulty: O, implemented: false,
+                       does: "Akan suluboya lekeleri ve fırça darbeleri", use_when: "Doğa, su, hava olayları", ref: "lemo-opuscar: Watercolor Brush", mix_with: [urban-sketch, chinese-ink-wash, crayon-picture-book] }
+  chinese-ink-wash: { name: { tr: "Çin mürekkep resmi", en: "Chinese Ink Wash" }, kind: code, lang_neutral: true, difficulty: O, implemented: false,
+                       does: "Mürekkep lekeleri, boşluk ve fırça", use_when: "Doğu kökenli buluşlar (kâğıt, pusula, barut)", ref: "lemo-opuscar: Chinese Ink Wash", mix_with: [watercolor-brush, red-paper-cut, shadow-puppetry] }
+  impasto-oil: { name: { tr: "Kalın yağlı boya", en: "Impasto Oil Painting" }, kind: code, lang_neutral: true, difficulty: Z, implemented: false,
+                       does: "Dokulu yağlı boya, renk yayılması", use_when: "Duygusal dönüm noktası", ref: "lemo-opuscar: Impasto Oil Painting", mix_with: [watercolor-brush, archival-film, cinematic-dark] }
+  one-line-drawing: { name: { tr: "Tek çizgi çizim", en: "One-line Drawing" }, kind: code, lang_neutral: true, difficulty: O, implemented: false,
+                       does: "Kesintisiz tek çizgiyle bütün hikâye", use_when: "Minimal, şiirsel anlatım, kapanış", ref: "lemo-opuscar: One-line Drawing", mix_with: [kinetic-type, swiss-minimal, whiteboard-doodle] }
+  urban-sketch: { name: { tr: "Kentsel eskiz", en: "Urban Sketch · Pen & Wash" }, kind: code, lang_neutral: true, difficulty: O, implemented: false,
+                       does: "Kalem eskiz + hafif suluboya", use_when: "Mekân, şehir, mimari buluşlar", ref: "lemo-opuscar: Urban Sketch · Pen & Wash", mix_with: [watercolor-brush, archival-film, vox-explainer] }
+  shadow-puppetry: { name: { tr: "Gölge oyunu", en: "Shadow Puppetry" }, kind: code, lang_neutral: true, difficulty: O, implemented: false,
+                       does: "Işıklı perde üzerinde deri kuklalar (Karagöz akrabası)", use_when: "Efsane, eski hikâye; TR kanalı için Karagöz uyarlaması", ref: "lemo-opuscar: Shadow Puppetry", mix_with: [red-paper-cut, paper-cut-lightbox, silent-film-1920s] }
+  ukiyo-e: { name: { tr: "Ukiyo-e", en: "Ukiyo-e" }, kind: code, lang_neutral: true, difficulty: Z, implemented: false,
+                       does: "Japon ahşap baskı kareleri", use_when: "Japon buluşları, yolculuk", ref: "lemo-opuscar: Ukiyo-e", mix_with: [woodcut, chinese-ink-wash, silkscreen-poster] }
+  red-paper-cut: { name: { tr: "Kırmızı kâğıt kesme", en: "Red Paper-cut" }, kind: code, lang_neutral: true, difficulty: O, implemented: false,
+                       does: "Kırmızı kâğıt oyma motifleri", use_when: "Kutlama, gelenek", ref: "lemo-opuscar: Red Paper-cut", mix_with: [paper-cut-lightbox, shadow-puppetry, paper-collage] }
+  paper-cut-lightbox: { name: { tr: "Işıklı kâğıt kutu", en: "Paper-cut Lightbox" }, kind: code, lang_neutral: true, difficulty: Z, implemented: false,
+                       does: "Katmanlı kâğıt kesimleri arkadan aydınlatılmış", use_when: "Masalsı, katmanlı anlatım", ref: "lemo-opuscar: Paper-cut Lightbox", mix_with: [red-paper-cut, paper-popup-book, paper-collage] }
+  risograph: { name: { tr: "Risograf baskı", en: "Risograph Print" }, kind: code, lang_neutral: true, difficulty: O, implemented: false,
+                       does: "Üst üste binen mürekkep katmanları, kayık baskı", use_when: "Genç, sanatsal ton", ref: "lemo-opuscar: Risograph Print", mix_with: [halftone-dossier, silkscreen-poster, constructivist-montage, vox-explainer] }
+  halftone-dossier: { name: { tr: "Noktalı baskı dosya", en: "Halftone Dossier" }, kind: mixed, lang_neutral: partial, difficulty: O, implemented: false,
+                       does: "Gazete noktalı baskısı, dosya ve damga estetiği", use_when: "Arşiv belgesi, 'tarihten bir dosya'", ref: "lemo-opuscar: Halftone Dossier", mix_with: [vox-explainer, visual-investigation, risograph, archival-film] }
+  lantern: { name: { tr: "Kâğıt fener (arkadan aydınlatılmış kâğıt kesik)", en: "Paper-cut Lightbox" }, kind: code, lang_neutral: true, difficulty: Z, implemented: true,
+                       does: "Sığ kutuda 6-9 kesik kâğıt katmanı, arkadan sıcak ışık, deliklerden yanan pencereler/ay/kandiller, katmanlar arası yumuşak gölge; three.js sahnesi ayrı render edilip klip olarak oynar", use_when: "Masalsı/manevi anlatı, gece ve ışık anları, yolculuk (deniz, çöl), yüz göstermeden figür; In Your Hand kanal stili", ref: "Lemo-Opuscar paper-lantern (MIT)", guide: .studio/plugin/skills/remotion-styles/paper-lantern.md, learn: docs/styles/paper-lantern.md, status: "2026-11-10: kit + LanternIYH (sea, crossing, desert, hand)", mix_with: [footage, vox-explainer] }
+  lantern-text: { name: { tr: "Kâğıt fener (yazılı)", en: "Paper-cut Lightbox (with paper text)" }, kind: code, lang_neutral: false, difficulty: Z, implemented: true,
+                       does: "lantern ile aynı; klipte kâğıt yazı olduğu için o sahnede altyazı kapanır", use_when: "kapanış kartı, kendini yazan kâğıt", ref: "Lemo-Opuscar paper-lantern (MIT)", guide: .studio/plugin/skills/remotion-styles/paper-lantern.md, mix_with: [lantern] }
+  footage: { name: { tr: "Saha görüntüsü", en: "Field footage" }, kind: footage, lang_neutral: true, difficulty: K, implemented: true,
+                       does: "Gerçek video klipler (kanalın kendi çekimleri) art arda, yumuşak çapraz geçiş, ağır itme, sıcak renk ayarı, isteğe bağlı ortam sesi", use_when: "Kuruluş/kanal tanıtımı, saha anları, 'bugün' bölümü; hikâye/kolaj açılışından sonra gerçek dünya", ref: "IYH001 (2026-11-09)", guide: studio/src/styles/footage/index.tsx, mix_with: [vox-explainer, ken-burns-photo, archival-film] }
+  food-promo: { name: { tr: "Yemek tanıtım reklamı", en: "Food promo / ad" }, kind: mixed, lang_neutral: partial, difficulty: O, implemented: false,
+                       does: "9:16 15-30 sn yemek reklamı: gerçek video/foto, sıcak ton, buhar, yağ parıltısı, makro ve sığ alan derinliği, yavaş itme; dünyanın içinden geçişler (ışık noktası → ateş, ön plan örtüsü, buhar, tabaktan iris); kanca → köken → pişirme → hero (tabak iner) → marka kartı + rozet + CTA; Reels güvenli alanı", use_when: "Yöresel yemek, restoran/etkinlik tanıtımı, Instagram/WhatsApp klibi (Mana)", ref: "video-shotcraft (Apache-2.0), remotion-ads, product-promo-film, cinematic-shot (MIT): docs/styles/ads/README.md", guide: .studio/plugin/skills/remotion-styles/food-promo.md, learn: docs/styles/food-promo.md, note: "2026-11-10: ortak bileşen yok; yalnız bölüme özel studio/src/compositions/ManaPromo.tsx (MANA001, 6 sahneye sabit). Tarif kataloğu docs/styles/ads/transitions.md", mix_with: [footage, ken-burns-photo, kinetic-type, cinematic-dark] }
+  woodcut: { name: { tr: "Ağaç baskı (3D)", en: "Woodcut Print" }, kind: code, lang_neutral: true, difficulty: Z, implemented: true,
+                       does: "three.js sahne → baskı shader'ı: siyah kalıp, ışık yalnız oyulan yerde, biçimi izleyen oyuklar, tek renk yalnız yanan şey için, kâğıt payı, oyma açılışı. Sahne ayrı kompozisyon olarak sahne süresinde render edilir (tools/woodcut_render.py), ana videoda klip olarak oynar", use_when: "Tek kaynaklı anlatı anları, gece/hapis/kamp, fotoğrafı olmayan kişiler (siluet), diyalog canlandırmaları; erken dönem buluşlar", ref: "lemo-opuscar: Woodcut Print; cinecode woodcut (MIT)", guide: .studio/plugin/skills/remotion-styles/three-scenes.md, status: "2026-11-08: WoodcutMatch (EP009 s01); diğer EP009 sahneleri yapılıyor", mix_with: [vox-explainer, ken-burns-photo, archival-film, copperplate-engraving, ukiyo-e] }
+  depth-photo: { name: { tr: "Derinlik haritalı foto (çok katmanlı 2.5D)", en: "Depth Multiplane Photo" }, kind: photo, lang_neutral: true, difficulty: O, implemented: true,
+                       does: "Depth Anything V2 Small haritasıyla görüntü 3-4 derinlik kartına bölünür (arka doldurulur), perspektif kamera yana kayıp döner, arka bulanık; DepthPhoto klibi (tools/woodcut_render.py)", use_when: "Tek ana nesnesi olmayan gravür/manzara/kalabalık; iki katmanlı photo_planes yetmediğinde", guide: .studio/plugin/skills/remotion-styles/depth-elements.md, status: "2026-11-11: EP013 s02 (kullanıcı onaylı)", mix_with: [ken-burns-photo, archival-film, object3d, vox-explainer] }
+  object3d: { name: { tr: "Müze nesnesi (gerçek 3D tarama)", en: "Museum Object 3D" }, kind: code, lang_neutral: true, difficulty: O, implemented: true,
+                       does: "Gerçek bir müze nesnesinin CC0 3D taraması (Smithsonian GLB) karanlık müzede tek spotla, yörünge/makro/kaldırma çekimleri; ACES, gerçek gölge, toz, vinyet, tane. Ayrı kompozisyon (MuseumObject) sahne süresinde render edilir (tools/woodcut_render.py), ana videoda klip olarak oynar", use_when: "Videonun kahraman çekimi: nesnenin kendisi hikâyenin merkezindeyse ve CC0 taraması varsa (3d.si.edu, 3d-api.si.edu)", guide: .studio/plugin/skills/remotion-styles/object3d.md, status: "2026-11-11: EP013 Lincoln patent modeli, ilk deneme", mix_with: [ken-burns-photo, archival-film, vox-explainer, woodcut] }
+  copperplate-engraving: { name: { tr: "Bakır gravür", en: "Copperplate Engraving" }, kind: code, lang_neutral: true, difficulty: Z, implemented: false,
+                       does: "Kendini çizen ince taramalı gravür levhası", use_when: "1800'ler buluşları, patent dönemi, doğa tarihi", ref: "lemo-opuscar: Copperplate Engraving", mix_with: [woodcut, blueprint-diagram, archival-film, vox-explainer] }
+  silkscreen-poster: { name: { tr: "Serigrafi seyahat afişi", en: "Silkscreen Travel Poster" }, kind: code, lang_neutral: partial, difficulty: O, implemented: false,
+                       does: "Afiş renk renk basılarak oluşur", use_when: "Bölüm kapakları, yer ve dönem tanıtımı", ref: "lemo-opuscar: Silkscreen Travel Poster", mix_with: [risograph, art-deco, constructivist-montage] }
+  spy-titles-60s: { name: { tr: "60'lar casus film jeneriği", en: "60s Spy Title Sequence" }, kind: type, lang_neutral: false, difficulty: O, implemented: false,
+                       does: "Siluetler, cesur renkler, jenerik tipografisi", use_when: "Seri açılışı, gizemli hook", ref: "lemo-opuscar: 60s Spy Title Sequence", mix_with: [mid-century-cartoon, silkscreen-poster, kinetic-type] }
+  art-deco: { name: { tr: "Art Deco", en: "Art Deco" }, kind: code, lang_neutral: partial, difficulty: O, implemented: false,
+                       does: "1920-30'lar geometrik süsleme, altın ve siyah", use_when: "1920-30'lar buluşları, dönem havası", ref: "lemo-opuscar: Art Deco", mix_with: [silkscreen-poster, spy-titles-60s, archival-film] }
+  stained-glass: { name: { tr: "Vitray", en: "Stained Glass" }, kind: code, lang_neutral: true, difficulty: Z, implemented: false,
+                       does: "Işığın geçtiği vitray pencere", use_when: "Ortaçağ, katedral, optik", ref: "lemo-opuscar: Stained Glass", mix_with: [art-deco, paper-cut-lightbox] }
+  pictogram-motion: { name: { tr: "Piktogram hareketi", en: "Pictogram Motion" }, kind: code, lang_neutral: true, difficulty: O, implemented: false,
+                       does: "Geometrik piktogramlarla hareket", use_when: "Dil bağımsız açıklama, sınıflandırma", ref: "lemo-opuscar: Pictogram Motion", mix_with: [flat-vector, swiss-minimal, data-viz] }
+  dark-tech-keynote: { name: { tr: "Koyu teknoloji lansmanı", en: "Dark Tech Keynote" }, kind: type, lang_neutral: false, difficulty: O, implemented: false,
+                       does: "Ürün lansmanı estetiği: koyu zemin, parlak ürün, büyük yazı", use_when: "Modern buluşlar, ürün karşılaştırması", ref: "lemo-opuscar: Dark Tech Keynote", mix_with: [glass-product-render, kinetic-type, glass-ui] }
+  living-screencast: { name: { tr: "Canlı ekran kaydı", en: "Living Screencast" }, kind: mixed, lang_neutral: false, difficulty: O, implemented: false,
+                       does: "Ekran kaydı içinde canlanan arayüz", use_when: "Yazılım, dijital araçlar", ref: "lemo-opuscar: Living Screencast", mix_with: [chat-ui, terminal-crt, kinetic-type] }
+  hologram-hud: { name: { tr: "Bilimkurgu hologram HUD", en: "Sci-fi Hologram HUD" }, kind: code, lang_neutral: partial, difficulty: O, implemented: false,
+                       does: "Nesne taranıp hologram arayüzüne dönüşür", use_when: "Gelecek teknolojileri, ürün analizi", ref: "lemo-opuscar: Sci-fi Hologram HUD", mix_with: [satellite-briefing, glass-ui, lidar-survey] }
+  rubber-hose-1930s: { name: { tr: "1930'lar lastik kol çizgi film", en: "1930s Rubber Hose Cartoon" }, kind: code, lang_neutral: true, difficulty: Z, implemented: false,
+                       does: "Eski çizgi film karakterleri, lastik gibi uzuvlar", use_when: "Mizahi, eğlenceli örnek", ref: "lemo-opuscar: 1930s Rubber Hose Cartoon", mix_with: [silent-film-1920s, mid-century-cartoon, archival-film] }
+  cel-anime-80s: { name: { tr: "80'ler cel anime", en: "80s Cel Anime" }, kind: code, lang_neutral: true, difficulty: Z, implemented: false,
+                       does: "Neon şehir, el boyaması cel estetiği", use_when: "Genç kitle, enerjik hook", ref: "lemo-opuscar: 80s Cel Anime", mix_with: [scifi-sitcom-toon, pixel-art] }
+  scifi-sitcom-toon: { name: { tr: "Bilimkurgu sitcom çizgi filmi", en: "Sci-Fi Sitcom Toon" }, kind: code, lang_neutral: true, difficulty: Z, implemented: false,
+                       does: "Rick and Morty tarzı karikatür (marka/karakter kullanmadan)", use_when: "Mizahi düşünce deneyi", ref: "lemo-opuscar: Sci-Fi Sitcom Toon", mix_with: [cel-anime-80s, mid-century-cartoon] }
+  mid-century-cartoon: { name: { tr: "1950'ler eğitim filmi", en: "Mid-century Cartoon" }, kind: code, lang_neutral: true, difficulty: O, implemented: false,
+                       does: "1950'ler okul eğitim filmi çizgi stili", use_when: "'Nasıl kullanılır' anlatımı, retro mizah", ref: "lemo-opuscar: Mid-century Cartoon", mix_with: [spy-titles-60s, rubber-hose-1930s, vox-explainer] }
+  hd-2d: { name: { tr: "HD-2D", en: "HD-2D" }, kind: code, lang_neutral: true, difficulty: Z, implemented: false,
+                       does: "Piksel karakterler + derinlikli ışıklı 3D dünya", use_when: "Nostaljik ama sinematik anlatım", ref: "lemo-opuscar: HD-2D", mix_with: [pixel-art, low-poly-island, tilt-shift-miniature] }
+  microgame-frenzy: { name: { tr: "Mikro oyun çılgınlığı", en: "Microgame Frenzy" }, kind: code, lang_neutral: partial, difficulty: O, implemented: false,
+                       does: "Saniyelik mini oyunlar art arda", use_when: "Hızlı ipuçları, quiz", ref: "lemo-opuscar: Microgame Frenzy", mix_with: [pixel-art, game-show-flat, neo-brutalism] }
+  game-show-flat: { name: { tr: "Yarışma programı", en: "Game Show Flat" }, kind: code, lang_neutral: partial, difficulty: O, implemented: false,
+                       does: "Düz renkli yarışma ve ritim oyunu", use_when: "Bilgi yarışması, tarih özeti", ref: "lemo-opuscar: Game Show Flat", mix_with: [neo-brutalism, microgame-frenzy, kinetic-type] }
+  silent-film-1920s: { name: { tr: "1920'ler sessiz film", en: "1920s Silent Film" }, kind: mixed, lang_neutral: partial, difficulty: O, implemented: false,
+                       does: "Ara yazı kartları, iris geçişleri, siyah-beyaz titreme", use_when: "Tarihî buluş hikâyesi; archival-film'in gelişmiş hali", ref: "lemo-opuscar: 1920s Silent Film", mix_with: [archival-film, newsreel-1920s, rubber-hose-1930s] }
+  liminal-found-footage: { name: { tr: "Liminal bulunmuş görüntü", en: "Liminal Found Footage" }, kind: code, lang_neutral: true, difficulty: Z, implemented: false,
+                       does: "VHS dokusu, boş ve tekinsiz mekânlar", use_when: "Gizem, gerilim hook'u", ref: "lemo-opuscar: Liminal Found Footage", mix_with: [terminal-crt, archival-film, cinematic-dark] }
+  brick-toy: { name: { tr: "Yapı oyuncağı", en: "Brick Toy" }, kind: code, lang_neutral: true, difficulty: Z, implemented: false,
+                       does: "Oyuncak tuğlalarla kurulan sahneler (marka/logo yok)", use_when: "Bölümleme, modülerlik, çocuk dostu", ref: "lemo-opuscar: Brick Toy", mix_with: [stop-motion, tilt-shift-miniature, low-poly-island] }
+  paper-popup-book: { name: { tr: "Kâğıt açılır kitap", en: "Paper Pop-up Book" }, kind: code, lang_neutral: true, difficulty: Z, implemented: false,
+                       does: "Sayfa açıldıkça kalkan kâğıt katmanlar", use_when: "Masalsı buluş hikâyesi", ref: "lemo-opuscar: Paper Pop-up Book", mix_with: [paper-collage, crayon-picture-book, paper-cut-lightbox, stop-motion] }
+  tilt-shift-miniature: { name: { tr: "Minyatür (tilt-shift)", en: "Tilt-Shift Miniature" }, kind: code, lang_neutral: true, difficulty: Z, implemented: false,
+                       does: "Gerçek ölçekli sahne maket gibi görünür", use_when: "Şehir, ulaşım, sistemler", ref: "lemo-opuscar: Tilt-Shift Miniature", mix_with: [brick-toy, timelapse-symphony, layered-collage] }
+  low-poly-island: { name: { tr: "Az poligonlu izometrik ada", en: "Low-poly Isometric Island" }, kind: code, lang_neutral: true, difficulty: Z, implemented: false,
+                       does: "Kare kare büyüyen az poligonlu dünya", use_when: "Büyüme, ekosistem, sistem kurma", ref: "lemo-opuscar: Low-poly Isometric Island", mix_with: [isometric, hd-2d, brick-toy] }
+  glass-product-render: { name: { tr: "Cam ürün görseli", en: "Glass Product Render" }, kind: code, lang_neutral: partial, difficulty: Z, implemented: false,
+                       does: "Parlak cam malzemeli ürün tanıtımı", use_when: "Modern ürün, tasarım analizi", ref: "lemo-opuscar: Glass Product Render", mix_with: [dark-tech-keynote, exploded-teardown, glass-ui] }
+
+captions:
+  cap-karaoke: { name: "Karaoke / word highlight", does: "Konuşulan kelime renk değiştirir", implemented: true }
+  cap-pop:     { name: "Pop-in kelime", does: "Kelimeler tek tek büyüyerek belirir" }
+  cap-box:     { name: "Kutulu", does: "Kelime arkasında renkli kutu" }
+  cap-outline: { name: "Konturlu", does: "Kalın kontur + gölge, her zeminde okunur" }
+  cap-minimal: { name: "Minimal", does: "Küçük, alt blok, vurgu yok" }
+  cap-paper:   { name: "Kâğıt şerit", does: "Her kelime yırtık kâğıt şerit; konuşulan kelimenin şeridi vurgu rengine döner (Alfa Slab One)", implemented: true }
+  cap-print:   { name: "Matbaa harfi", does: "Dönem matbaa harfi (IM Fell English); tarihî/gravür bölümleri", implemented: true }
+  cap-serif:   { name: "Sessiz serif", does: "Sıcak kırık beyaz serif, yanık iz (paper-lantern)", implemented: true }
+  cap-none:    { name: "Altyazısız", does: "MLA'da dil bağımsız görsel için; altyazı ayrı dosya" }
+
+# style: auto iken konu tipine göre öneri (PLAN 7.2). Görsel yönetmen sahne bazında uygular.
+auto_rules:
+  - { topic: "soyut ilke/kavram",                   styles: [blueprint-diagram, kinetic-type] }
+  - { topic: "buluş hikâyesi, vaka analizi",        styles: [ken-burns-photo, archival-film] }
+  - { topic: "karşılaştırma (önce/sonra, sorun/çözüm)", styles: [split-screen] }
+  - { topic: "sayı, istatistik, patent verisi",     styles: [data-viz] }
+  - { topic: "seri tanıtımı",                       styles: [trading-card] }
+  - { topic: "sosyal/konuşmalı anlatım",            styles: [chat-ui] }
+  - { topic: "karma konu",                          styles: [hybrid] }
+# style_mode: lang_neutral iken yalnızca lang_neutral: true (veya partial) stiller seçilir (PLAN 10).

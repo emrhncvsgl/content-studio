@@ -1,0 +1,9 @@
+# Hafif ana ortam: voice/.venv-chatterbox (adı aynı kalır; araçlar bu yolu bekler). Python 3.11. ~250 MB.
+# Ses buluttaysa ya da dışarıda üretiliyorsa (kaggle | gemini | elevenlabs) yeter: tools/*.py, Whisper kapısı, miks, paket.
+# Eksik kalan: yerel TTS ve ses kimliği benzerlik kontrolü (chatterbox/torch). Gerekirse sonradan: core.txt ile yükselt.
+pyyaml==6.0.3
+numpy==1.26.4
+librosa==0.11.0
+soundfile==0.14.0
+scipy==1.17.1
+pillow==12.3.0

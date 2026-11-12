@@ -1,0 +1,78 @@
+# Kanal profili (örnek). /content-studio:new-channel röportajla bunu doldurup kökte `channel.yaml` olarak yazar.
+# Ek kanallar: channels/<id>/channel.yaml (bölüm hangi kanala aitse brief.yaml `channel: <id>`; tools/channel.py).
+# Kanala özgü içerik (marka, logo, müzik, kaynak kayıtları) content/ altındadır; buradaki yollar content/'e göredir.
+id: my-channel
+name: My Channel
+episode_prefix: EP          # bölüm klasörü: content/episodes/EP001-<slug>
+about: >
+  Kanalın ne anlattığı, neden izlenmesi gerektiği (2-3 cümle). Senaryo yazarı ve konu keşfi bunu okur.
+audience: Kimler izliyor, ne biliyorlar, ne bekliyorlar.
+
+languages:
+  primary: en               # tr | en
+  active: [en]              # sesi hazır olan diller; 'both' istenince ikinci dilin sesi de gerekir
+
+voice:
+  default: narrator_v3      # voice/profiles/<id>.yaml (sentetik tasarım ses ya da izinli kendi ses; gerçek kişi klonlanmaz)
+  backend: kaggle           # kaggle | local | gemini | elevenlabs  (/studio-setup seçer)
+
+tone: merak uyandıran, sade, belgesel anlatıcısı
+cta:
+  en: "Follow for more."
+
+# Seri kayıtları (isteğe bağlı): her bölümün beslendiği doğrulanmış kayıtlar (ör. prensip, tarif, ülke, kişi).
+# Kayıt dosyası: content/<klasör>/<id>-<slug>.yaml. Yeni bölüm: tools/new_episode.py --source <id> [--series <seri>]
+content_sources: {}
+#  stories: content/sources/stories
+series: []
+#  - id: main
+#    title: "Ana seri"
+#    source: stories
+#    voice: narrator_v3
+#    style: auto
+#    episode_dir: "content/episodes/{prefix}{num:03d}-{slug}"
+#    structure: [hook, context, turn, example, takeaway, cta]
+
+formats:
+  short: { target_seconds: 45, min_seconds: 30, max_seconds: 90, width: 1080, height: 1920, fps: 30 }
+  long:  { target_seconds: 480, width: 1920, height: 1080, fps: 30 }
+
+# Görsel stil tercihleri: catalog/styles.yaml id'leri ('auto' kuralları catalog/styles.yaml → auto_rules).
+styles:
+  preferred: [vox-explainer, ken-burns-photo, archival-film, kinetic-type]
+  avoid: []
+  captions: cap-karaoke
+
+brand:
+  colors: { primary: "#1F4E8C", accent: "#F2A93B", background: "#0B1726", text: "#F5F7FA" }
+  font: "Inter"             # content/fonts (tools/fetch_fonts.py; yalnızca OFL/açık lisans)
+  outro: null               # ör. brand/outro/outro.mp4 (package.py her videonun sonuna ekler)
+
+# Tasarım dili (/content-studio:design-language yazar). Ajanlar her bölümde buna uyar; bölüm bazında brief.yaml ile değişir.
+design:
+  summary: ""               # tek cümle: "koyu masa üstünde kâğıt kolaj, yavaş kamera, sıcak sarı vurgu"
+  styles: { hero: null, mix: [], insert: [] }       # ana stil, karışabilenler, ara sıra ara bölüm
+  camera: { energy: calm, moves: [], avoid: [] }   # calm | measured | energetic; library camera vocabulary id'leri
+  transitions: { default: cut, signature: [], avoid: [], max_per_minute: 6 }
+  captions: { style: cap-karaoke, case: sentence, position: lower_third }
+  palette: { base: [], accent: null, rule: "" }
+  type: { display: null, body: null }
+  texture: []               # kâğıt, ahşap, film tanesi…
+  sound: { music_mood: [], music_level_lufs: -19.5, sfx_character: "", silence: "" }
+  motifs: []                # kanala özgü tekrar eden görsel/işitsel öğeler
+  avoid: []                 # kanalın asla yapmadığı şeyler (klişeler, efektler)
+  sample_clip: null         # deneme klibi yolu (content/channels/<id>/design/sample.mp4)
+
+assets:
+  allowed_sources:
+    - Wikimedia Commons (lisans alanı okunur; CC0 / kamu malı / CC-BY atıflı)
+    - Library of Congress, NASA ve benzeri kamu malı arşivler
+    - CC0 doku kütüphaneleri: ambientCG, Poly Haven
+    - Kenney ses efektleri (CC0; tools/sounds.py)
+    - Kanalın kendi ürettiği görseller
+  forbidden: [film/dizi kareleri, marka logoları, tanınmış karakterler, lisansı belirsiz görseller]
+
+approval:
+  script: true
+  storyboard: true
+  final: true

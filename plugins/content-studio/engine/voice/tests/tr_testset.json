@@ -1,0 +1,19 @@
+{
+  "lang": "tr",
+  "note": "PLAN.md 6.5: (1) sayı, (2) uzun ekli kelime, (3) soru, (4) duygulu, (5) terim. 1b ve 5b normalizasyon gereğini ölçmek için ham varyantlardır.",
+  "sentences": [
+    {"id": "t1",  "kind": "sayi",      "emotion": "calm",    "text": "Bin dokuz yüz kırk altı yılında Altşuler, kırk bin patenti tek tek inceledi."},
+    {"id": "t1b", "kind": "sayi-ham",  "emotion": "calm",    "text": "1946 yılında Altshuller, 40.000 patenti tek tek inceledi."},
+    {"id": "t2",  "kind": "ekli",      "emotion": "serious", "text": "Çözemediklerimizden öğrendiklerimiz, başardıklarımızdan çok daha değerlidir."},
+    {"id": "t3",  "kind": "soru",      "emotion": "curious", "text": "Peki bir sorunu çözmenin en hızlı yolu, onu parçalara ayırmak olabilir mi?"},
+    {"id": "t4",  "kind": "duygulu",   "emotion": "excited", "text": "İnanılmaz ama gerçek: Bu basit fikir, koca bir sektörü baştan değiştirdi!"},
+    {"id": "t5",  "kind": "terim",     "emotion": "calm",    "text": "Triz, yani yaratıcı problem çözme teorisi, binlerce patentin analizine dayanır."},
+    {"id": "t5b", "kind": "terim-ham", "emotion": "calm",    "text": "TRIZ, yani yaratıcı problem çözme teorisi, binlerce patentin analizine dayanır."}
+  ],
+  "emotions": {
+    "calm":    {"exaggeration": 0.35, "cfg_weight": 0.5},
+    "curious": {"exaggeration": 0.5,  "cfg_weight": 0.5},
+    "excited": {"exaggeration": 0.75, "cfg_weight": 0.3},
+    "serious": {"exaggeration": 0.4,  "cfg_weight": 0.6}
+  }
+}

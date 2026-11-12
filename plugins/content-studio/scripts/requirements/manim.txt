@@ -1,0 +1,2 @@
+# İsteğe bağlı: tools/.venv-manim. Bilim/fizik animasyonu (studio/src/styles/manim). Sistemde cairo/pango gerekir (macOS: brew install pango).
+manim==0.22.0

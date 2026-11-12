@@ -1,0 +1,10 @@
+{"language": "English",
+ "text": "The night is long in here, and the guards walk past every hour. Keep your voice low, and listen to me carefully.",
+ "candidates": [
+  {"id": "cellmate_a", "instruct": "An older man in his fifties with a hoarse, low voice, speaking in a quiet urgent whisper close to the listener, tired but kind, with a slight Russian accent in English."},
+  {"id": "cellmate_b", "instruct": "A gravelly middle-aged male voice, a soft breathy half-whisper, calm and conspiratorial, slow pace, warm."},
+  {"id": "interrogator_a", "instruct": "A cold, flat male voice in his forties, precise and bored, bureaucratic and unhurried, low-mid pitch, no warmth, with a slight Russian accent in English."},
+  {"id": "interrogator_b", "instruct": "A clipped, hard male voice, authoritative and tired, speaking slowly with quiet contempt, deep and dry, close microphone."},
+  {"id": "professor_a", "instruct": "An elderly man in his seventies, gentle, patient and warm, slightly frail, a soft low voice of a teacher speaking quietly at night, with a slight Russian accent in English."},
+  {"id": "professor_b", "instruct": "An old male scholar with a thin, soft but clear voice, kind, deliberate pace, quietly encouraging."}
+ ]}

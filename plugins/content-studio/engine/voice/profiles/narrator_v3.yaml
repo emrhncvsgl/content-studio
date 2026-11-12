@@ -1,0 +1,22 @@
+# Ana seri sesi (EN), EP003'ten itibaren. Kaynak: tur 2 testinde en beğenilen trial_H7 (DECISIONS 2026-10-25, 2026-10-27).
+id: narrator_v3
+description: "Qwen3-TTS VoiceDesign H_calm_authority (seed 7): male narrator in his fifties, low-medium pitch (~132 Hz), smooth voice without rasp, calm authoritative documentary tone, measured pace. Synthetic designed voice, not a real person."
+refs:
+  en:
+    wav: voice/refs/narrator_v3.en.wav
+    text: In nineteen forty-six, a young patent clerk noticed something strange. The
+      world's greatest inventions were not random strokes of genius.
+engines:
+  en: chatterbox_std
+engine_options:
+  chatterbox:
+    vocoder_steps: 25
+post_filters:
+- afftdn=nr=10:nf=-55:tn=1
+identity:
+  min_similarity: 0.85
+defaults:
+  device: cpu
+  takes: 2
+  seed: 1000
+  scene_gap_s: 0.35

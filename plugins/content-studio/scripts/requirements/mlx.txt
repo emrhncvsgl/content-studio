@@ -1,0 +1,2 @@
+# Yalnızca Apple Silicon: voice/.venv-mlx (Python 3.11). Qwen3-TTS ses tasarımı (voice/design_voice.py), qwen_base motoru.
+mlx-audio==0.5.9

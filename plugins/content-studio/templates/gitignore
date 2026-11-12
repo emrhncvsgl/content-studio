@@ -1,0 +1,47 @@
+.venv*/
+**/.venv*/
+__pycache__/
+*.pyc
+.DS_Store
+node_modules/
+voice/models/
+voice/tests/out/
+content/episodes/*/render/
+*.wav
+!voice/refs/*.wav
+content/episodes/*/audio/_trials/
+content/episodes/*/audio/_colab/
+content/episodes/*/audio/_kaggle/
+studio/node_modules/
+studio/out/
+!content/sfx/*.wav
+!content/sfx/natural/*.wav
+!content/sfx/pixabay/*.wav
+# Pixabay dinleme adayları (seçim sayfası için indirildi; seçilenler originals/'a kopyalanır)
+content/sfx/pixabay/candidates/
+content/sfx/test_bed.wav
+content/music/*.mp3
+content/music/*.wav
+content/music/scottbuckley/
+content/_test/
+tools/music/soundfonts/
+tools/music/out/
+*.sf2
+
+# CC0 doku kaynakları (ambientCG/Poly Haven 8K orijinaller; büyük, git dışı)
+tools/textures/src/
+
+# Referans video incelemeleri (tools/ref_study.py; telifli kaynak videolar git dışı, analysis.md ve kareler değil)
+content/_refs/*/source.mp4
+content/_refs/*/raw.*
+*.part
+
+# Kanal görseli denemeleri (yeniden üretilebilir, ~75 MB)
+content/brand/concepts/
+!content/sfx/kenney/*.wav
+content/sfx/kenney/packs/
+content/episodes/_izle/
+
+# API anahtarları (ElevenLabs vb.), commit edilmez
+.env
+studio/editor/dist/

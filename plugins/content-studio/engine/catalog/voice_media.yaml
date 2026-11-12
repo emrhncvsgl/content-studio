@@ -1,0 +1,24 @@
+# Karakter sesi ortamları (sound-design §7b). synth.py --merge, speaker sahnesinin seçilen sesine uygular;
+# işlenmemiş hali sNN.dry.wav olarak kalır. Değerler ffmpeg -af zinciri; hedef: anlatıcıdan ilk saniyede ayrışsın, yorulmasın.
+# Kayıttan alıntı (telsiz, telefon, bant) için radio/tape; canlandırma için oda ortamları.
+
+cell_close:        # küçük taş hücre, fısıltı: yakın, kuru, kısa erken yansıma, alçak tiz
+  description: "Small stone cell at night, a whisper a metre away"
+  af: "highpass=f=140,lowpass=f=6500,aecho=0.85:0.5:11|23:0.22|0.12,acompressor=threshold=-24dB:ratio=3:attack=5:release=120,volume=-2dB"
+
+interrogation_room: # çıplak, sert oda: masa, duvar; belirgin kısa yankı
+  description: "Bare interrogation room, hard walls, one lamp"
+  af: "highpass=f=110,lowpass=f=8000,aecho=0.8:0.6:29|53|79:0.30|0.18|0.10,acompressor=threshold=-20dB:ratio=2.5:attack=8:release=150"
+
+barracks_night:    # ahşap baraka, gece, alçak sesle: geniş ama yumuşak, uzak
+  description: "Wooden barracks at night, low voice across bunks"
+  af: "highpass=f=160,lowpass=f=5500,aecho=0.8:0.55:41|73:0.20|0.12,volume=-3dB"
+
+radio:             # telsiz/telefon bandı (Bermuda referansı)
+  # 2026-11-10 (EP010): zincir sesi ~7.5 dB kısıyordu (replik −28 LUFS, anlatıcı −20.6); telafi zincirin sonunda, sınırlayıcı taşmayı keser.
+  description: "Radio or telephone band"
+  af: "highpass=f=300,lowpass=f=3400,acrusher=bits=10:mix=0.15,acompressor=threshold=-22dB:ratio=4,volume=7dB,alimiter=limit=0.89:level=false"
+
+tape:              # arşiv bandı
+  description: "Archive tape, slight wow and band limit"
+  af: "highpass=f=90,lowpass=f=7000,vibrato=f=0.6:d=0.03"

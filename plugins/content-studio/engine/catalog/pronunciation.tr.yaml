@@ -1,0 +1,5 @@
+# Yazım → okunuş (yalnızca TTS'e giden metin değişir, altyazı orijinali kullanır)
+# Tam kelime eşleşmesi, büyük/küçük harfe duyarlı. Ekler korunur (TRIZ'in → Triz'in).
+# Not: R1 testinde cümle başındaki "Triz" yutuldu; senaryoda cümleye terimle başlama.
+TRIZ: Triz
+Altshuller: Altşuller

@@ -1,0 +1,13 @@
+{"language": "English",
+ "text": "Okay, we have the procedure ready down here, and we will read it up to you one step at a time. Take your time, and tell us when you are ready to copy.",
+ "note": "EP010 karakter sesi adaylari (2026-11-10). Yalnizca metin tarifi; gercek kisi sesi ya da kaydi referans alinmadi. Roller: capcom (yer kontrolu), cmp (kabin pilotu), cdr (komutan), lmp.",
+ "candidates": [
+  {"id": "capcom_a", "instruct": "A calm American man in his late thirties with a clear, mid-pitched baritone voice, steady and unhurried, reading instructions aloud carefully, plain General American accent, matter-of-fact, no excitement."},
+  {"id": "capcom_b", "instruct": "A warm, fairly deep American male voice in his forties, gentle and precise, slow measured pace, the patient tone of a doctor explaining steps one at a time, quiet and even."},
+  {"id": "cmp_a", "instruct": "An American man in his late thirties with a lighter, slightly higher and slightly nasal tenor voice, tired and a little hoarse, speaking plainly and evenly at a brisk pace, low energy, understated."},
+  {"id": "cmp_b", "instruct": "A worn-out American man with a dry, slightly breathy mid-pitched voice, soft-spoken after days without sleep but tidy and matter-of-fact, relaxed pace, flat intonation."},
+  {"id": "cdr_a", "instruct": "A firm American man in his early forties with a deep, low chest voice, short and decisive, the calm authority of a commander, flat and economical, plain Midwestern accent, no drama."},
+  {"id": "cdr_b", "instruct": "A gruff, low baritone American male voice, clipped and dry, quiet confidence, speaks briefly and slowly, slightly rough texture, unhurried."},
+  {"id": "lmp_a", "instruct": "A younger American man in his mid thirties with a bright, light tenor voice and a mild Southern drawl, relaxed, casual and even, quiet, understated."},
+  {"id": "lmp_b", "instruct": "A young-sounding American man with a thin, clear, higher voice and a soft Southern accent, laconic, slightly slow, calm and plain."}
+ ]}

@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(voice/.venv-chatterbox/bin/python tools/*)",
+      "Bash(voice/.venv-chatterbox/bin/python voice/synth.py *)",
+      "Bash(voice/.venv-mlx/bin/python voice/synth.py *)",
+      "Bash(voice/.venv-mlx/bin/python voice/design_voice.py *)",
+      "Bash(npx remotion render *)",
+      "Bash(npx remotion still *)",
+      "Bash(npx remotion versions*)",
+      "Bash(npx tsc --noEmit*)",
+      "Bash(ffmpeg *)",
+      "Bash(ffprobe *)",
+      "Bash(whisper-cli *)",
+      "Bash(memory_pressure*)",
+      "Bash(sysctl -n vm.swapusage)",
+      "Bash(pgrep *)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Edit(content/**)",
+      "Edit(studio/out/**)",
+      "WebSearch",
+      "WebFetch(domain:commons.wikimedia.org)",
+      "WebFetch(domain:upload.wikimedia.org)",
+      "WebFetch(domain:patents.google.com)",
+      "WebFetch(domain:www.loc.gov)",
+      "WebFetch(domain:images.nasa.gov)"
+    ],
+    "ask": [
+      "Bash(npm install*)",
+      "Bash(npx remotion add*)",
+      "Bash(uv pip install*)",
+      "Bash(pip install*)",
+      "Bash(brew install*)",
+      "Bash(git push*)"
+    ],
+    "deny": [
+      "Bash(rm -rf *)"
+    ]
+  }
+}

@@ -1,0 +1,415 @@
+doc: 'Görsel dilin eksenleri (kullanıcı 2026-11-11: ''stil ne teknik ne ayırt edemiyorum''). styles.yaml''daki her kayıt burada bir eksene oturur: looks = görünüş (kare neye benziyor; made_with: hangi tekniklerle
+  yapılabilir), technique_styles = aslında üretim yolu olan kayıtlar, edit_patterns = kurgu/düzen kalıpları. Görünüş ile teknik ayrı eksen: ağaç baskı görünüşü 3D teknikle yapılabilir. Katman çerçevesi:
+  studio/editor/layers.ts. Yeni stil eklenince buraya da yazılır.'
+techniques:
+  2d-collage:
+    tr: 2D katmanlı kolaj
+    what: kesilmiş kâğıt/fotoğraf parçaları sanal bir masada, derinlik düzlemleri ve sanal kamera
+    built: true
+    via: vox-explainer
+  photo-motion:
+    tr: Fotoğraf hareketi
+    what: durağan görsel üzerinde yakınlaşma/kayma (Ken Burns)
+    built: true
+    via: ken-burns-photo, archival-film
+  2.5d-planes:
+    tr: 2 katmanlı 2.5D
+    what: ön nesne kesilir, arkası doldurulur; iki katman farklı hızda kayar
+    built: true
+    via: tools/photo_planes.py
+  2.5d-depth:
+    tr: Derinlik haritalı çok katmanlı 2.5D
+    what: derinlik haritasıyla 3-4 kart; tek ana nesnesi olmayan manzara/gravür
+    built: true
+    via: depth-photo
+  3d-scan:
+    tr: Gerçek 3D tarama
+    what: müzenin 3D taraması sanal ışık ve kamerayla
+    built: true
+    via: object3d
+  3d-code:
+    tr: Kodla kurulan 3D sahne
+    what: nesneler, mekanizma ve mekân kodla (three.js); kamera dünyada gezer (cinecode yaklaşımı)
+    built: true
+    via: woodcut sahneleri (kit.tsx)
+  shader-print:
+    tr: Baskı/çizim dönüştürücü (shader)
+    what: 3D ya da fotoğraf karesini baskı, gravür, boya görünüşüne çevirir
+    built: true
+    via: woodcut (kit.tsx), Lemo motoru
+  canvas-strokes:
+    tr: Kodla fırça/kesik çizimi
+    what: her çizgi/fırça darbesi ayrı çizilir ve kendini çizer (Lemo motoru)
+    built: true
+    via: woodcut/lemo
+  vector-draw:
+    tr: Kodla vektör çizim
+    what: SVG/vektör şekiller, çizgiler kendini çizer
+    built: true
+    via: blueprint-diagram
+  math-anim:
+    tr: Matematik/fizik animasyonu
+    what: Manim ile denklemler, kuvvetler, grafikler
+    built: true
+    via: manim
+  typography:
+    tr: Tipografi animasyonu
+    what: yazının kendisi hareket eder
+    built: true
+    via: kinetic-type
+  footage:
+    tr: Video görüntüsü
+    what: gerçek film/video kaydı
+    built: true
+    via: footage
+  lighting-sim:
+    tr: Işık/gölge simülasyonu
+    what: arkadan aydınlatılmış kâğıt, gölge, ışık kutusu
+    built: true
+    via: lantern
+looks:
+  blueprint-diagram:
+    made_with:
+    - typography
+    - vector-draw
+  whiteboard-doodle:
+    made_with:
+    - shader-print
+    - canvas-strokes
+    - 3d-code
+  flat-vector:
+    made_with:
+    - vector-draw
+    - canvas-strokes
+  isometric:
+    made_with:
+    - 3d-code
+  data-viz:
+    made_with:
+    - typography
+    - vector-draw
+  archival-film:
+    made_with:
+    - photo-motion
+    - 2.5d-planes
+    - 2.5d-depth
+  paper-collage:
+    made_with:
+    - 2d-collage
+    - lighting-sim
+    - 3d-code
+  vox-explainer:
+    made_with:
+    - 2d-collage
+    - 2.5d-planes
+    - photo-motion
+  chat-ui:
+    made_with:
+    - typography
+    - vector-draw
+  notebook-sticky:
+    made_with:
+    - 2d-collage
+    - lighting-sim
+    - 3d-code
+  swiss-minimal:
+    made_with:
+    - typography
+    - vector-draw
+  neo-brutalism:
+    made_with:
+    - typography
+    - vector-draw
+  glass-ui:
+    made_with:
+    - 3d-code
+  terminal-crt:
+    made_with:
+    - typography
+    - vector-draw
+  trading-card:
+    made_with:
+    - 2d-collage
+    - lighting-sim
+    - 3d-code
+  comic-panel:
+    made_with:
+    - 2d-collage
+    - lighting-sim
+    - 3d-code
+  pixel-art:
+    made_with:
+    - vector-draw
+    - canvas-strokes
+  cinematic-dark:
+    made_with:
+    - 3d-code
+  caption-news:
+    made_with:
+    - photo-motion
+    - 2.5d-planes
+    - 2.5d-depth
+  newsreel-1920s:
+    made_with:
+    - photo-motion
+    - 2.5d-planes
+    - 2.5d-depth
+    - footage
+  visual-investigation:
+    made_with:
+    - photo-motion
+    - 2.5d-planes
+    - 2.5d-depth
+  constructivist-montage:
+    made_with:
+    - photo-motion
+    - 2.5d-planes
+    - 2.5d-depth
+  sports-telestrator:
+    made_with:
+    - typography
+    - vector-draw
+  broadcast-news:
+    made_with:
+    - photo-motion
+    - 2.5d-planes
+    - 2.5d-depth
+  satellite-briefing:
+    made_with:
+    - photo-motion
+    - 2.5d-planes
+    - 2.5d-depth
+  engineering-board:
+    made_with:
+    - typography
+    - vector-draw
+  lidar-survey:
+    made_with:
+    - 3d-code
+  projection-model:
+    made_with:
+    - 3d-code
+    - 3d-scan
+  data-physicalization:
+    made_with:
+    - 3d-code
+    - 3d-scan
+  exploded-teardown:
+    made_with:
+    - 3d-code
+    - 3d-scan
+  microscope-story:
+    made_with:
+    - photo-motion
+    - 2.5d-planes
+    - 2.5d-depth
+  archive-light-table:
+    made_with:
+    - photo-motion
+    - 2.5d-planes
+    - 2.5d-depth
+  crayon-picture-book:
+    made_with:
+    - shader-print
+    - canvas-strokes
+    - 3d-code
+  watercolor-brush:
+    made_with:
+    - shader-print
+    - canvas-strokes
+    - 3d-code
+  chinese-ink-wash:
+    made_with:
+    - shader-print
+    - canvas-strokes
+    - 3d-code
+  impasto-oil:
+    made_with:
+    - shader-print
+    - canvas-strokes
+    - 3d-code
+  one-line-drawing:
+    made_with:
+    - shader-print
+    - canvas-strokes
+    - 3d-code
+  urban-sketch:
+    made_with:
+    - shader-print
+    - canvas-strokes
+    - 3d-code
+  shadow-puppetry:
+    made_with:
+    - 2d-collage
+    - lighting-sim
+    - 3d-code
+  ukiyo-e:
+    made_with:
+    - shader-print
+    - canvas-strokes
+    - 3d-code
+  red-paper-cut:
+    made_with:
+    - 2d-collage
+    - lighting-sim
+    - 3d-code
+  paper-cut-lightbox:
+    made_with:
+    - 2d-collage
+    - lighting-sim
+    - 3d-code
+  risograph:
+    made_with:
+    - shader-print
+    - canvas-strokes
+    - 3d-code
+  halftone-dossier:
+    made_with:
+    - shader-print
+    - canvas-strokes
+    - 3d-code
+  lantern:
+    made_with:
+    - 2d-collage
+    - lighting-sim
+    - 3d-code
+  lantern-text:
+    made_with:
+    - 2d-collage
+    - lighting-sim
+    - 3d-code
+  food-promo:
+    made_with:
+    - photo-motion
+    - 2.5d-planes
+    - 2.5d-depth
+  woodcut:
+    made_with:
+    - shader-print
+    - canvas-strokes
+    - 3d-code
+  copperplate-engraving:
+    made_with:
+    - shader-print
+    - canvas-strokes
+    - 3d-code
+  silkscreen-poster:
+    made_with:
+    - shader-print
+    - canvas-strokes
+    - 3d-code
+  spy-titles-60s:
+    made_with:
+    - typography
+    - vector-draw
+  art-deco:
+    made_with:
+    - typography
+    - vector-draw
+  stained-glass:
+    made_with:
+    - shader-print
+    - canvas-strokes
+    - 3d-code
+  pictogram-motion:
+    made_with:
+    - vector-draw
+    - canvas-strokes
+  dark-tech-keynote:
+    made_with:
+    - typography
+    - vector-draw
+  living-screencast:
+    made_with:
+    - typography
+    - vector-draw
+  hologram-hud:
+    made_with:
+    - 3d-code
+  rubber-hose-1930s:
+    made_with:
+    - vector-draw
+    - canvas-strokes
+  cel-anime-80s:
+    made_with:
+    - vector-draw
+    - canvas-strokes
+  scifi-sitcom-toon:
+    made_with:
+    - vector-draw
+    - canvas-strokes
+  mid-century-cartoon:
+    made_with:
+    - vector-draw
+    - canvas-strokes
+  hd-2d:
+    made_with:
+    - 3d-code
+  microgame-frenzy:
+    made_with:
+    - vector-draw
+    - canvas-strokes
+  game-show-flat:
+    made_with:
+    - vector-draw
+    - canvas-strokes
+  silent-film-1920s:
+    made_with:
+    - photo-motion
+    - 2.5d-planes
+    - 2.5d-depth
+    - footage
+  liminal-found-footage:
+    made_with:
+    - photo-motion
+    - 2.5d-planes
+    - 2.5d-depth
+    - footage
+  brick-toy:
+    made_with:
+    - 3d-code
+  paper-popup-book:
+    made_with:
+    - 3d-code
+  tilt-shift-miniature:
+    made_with:
+    - 3d-code
+  low-poly-island:
+    made_with:
+    - 3d-code
+  glass-product-render:
+    made_with:
+    - 3d-code
+    - 3d-scan
+technique_styles:
+  manim:
+    technique: math-anim
+    note: üretim yolu; görünüşü malzemeden gelir
+  kinetic-type:
+    technique: typography
+    note: üretim yolu; görünüşü malzemeden gelir
+  ken-burns-photo:
+    technique: photo-motion
+    note: üretim yolu; görünüşü malzemeden gelir
+  layered-collage:
+    technique: 2.5d-planes
+    note: üretim yolu; görünüşü malzemeden gelir
+  stop-motion:
+    technique: null
+    note: 'hareket tekniği: saniyede 8-12 kare, el yapımı his; her görünüşe uygulanabilir (vox stepFps)'
+  footage:
+    technique: footage
+    note: üretim yolu; görünüşü malzemeden gelir
+  depth-photo:
+    technique: 2.5d-depth
+    note: üretim yolu; görünüşü malzemeden gelir
+  object3d:
+    technique: 3d-scan
+    note: üretim yolu; görünüşü malzemeden gelir
+edit_patterns:
+  split-screen:
+    note: kurgu/düzen kalıbı (katman 6), görünüş değil
+  hybrid:
+    note: kurgu/düzen kalıbı (katman 6), görünüş değil
+  timelapse-symphony:
+    note: kurgu/düzen kalıbı (katman 6), görünüş değil

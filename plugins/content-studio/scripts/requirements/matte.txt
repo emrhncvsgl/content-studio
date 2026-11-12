@@ -1,0 +1,4 @@
+# İsteğe bağlı: tools/.venv-matte. Fotoğraftan nesne kesme (tools/cutout.py, make_sticker.py, photo_planes.py, depth_layers.py).
+rembg==2.0.67
+onnxruntime==1.31.0
+click

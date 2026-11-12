@@ -1,0 +1,39 @@
+# Yazım → okunuş (yalnızca TTS'e giden metin değişir, altyazı orijinali kullanır)
+# Tam kelime eşleşmesi, büyük/küçük harfe duyarlı.
+TRIZ: Treez
+Altshuller: Altshuler   # 2026-11-09: "Altshooler" s32/s54 "Altsula, Uldsula" okundu; tireli "Alt-shoo-ler" s17 ortada durak yapıyordu
+KitchenAid: Kitchen Aid
+Nakatsu: Nah-kaht-soo
+Nakatsu's: Nah-kaht-soo's
+Eiji: A G
+JR: J R
+Sanyo: Sahn-yoh
+Fresnel: Fray-nel
+Fresnel's: Fray-nel's
+Cordouan: Cor-doo-ahn
+Scilly: Silly
+COSTAR: Co-star
+Bohlin: Boh-leen
+Bohlin's: Boh-leen's
+PV: P V
+# EP009 (Altshuller); kulak testiyle doğrulanacak
+Genrikh: Gen-rikh
+Rafail: Ra-fa-eel
+Baku: Bah-koo
+Vorkuta: Vor-koo-tah
+Tbilisi: Tbilisi   # heceli yazım bozuk okundu (EP009 s24 "2 B. Lee C"); düz yazım denendi
+Altov: Al-tov
+# IYH001 (In Your Hand); kulak testiyle doğrulanacak
+inyourhand.org: in your hand dot org
+Negus: Nee-gus
+Qurbani: Kur-bah-nee
+Ahsen: Ah-sen
+# EP010 (Apollo 13 mailbox); kulak testiyle doğrulanacak
+Swigert: Swy-gert
+Haise: Haze
+Smylie: Smy-lee
+# EP012 (Bertha Benz); kulak testiyle doğrulanacak (tire durak yaparsa bitişik dene)
+Pforzheim: Fortshime
+Wiesloch: Veeslock
+Eugen: Oygen
+ligroin: lig row in

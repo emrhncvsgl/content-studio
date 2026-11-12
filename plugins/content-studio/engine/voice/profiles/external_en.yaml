@@ -1,0 +1,6 @@
+# Dış ses: ElevenLabs (kullanıcı kendi hesabından üretir, mp3 olarak verir). synth.py bu profille üretim yapmaz.
+# Ses dosyası sonradan audio/<dil>/ altına yerleştirilir (klip önce sessiz render edilebilir).
+id: external_en
+engine: external
+lang: en
+source: ElevenLabs (kullanıcı)

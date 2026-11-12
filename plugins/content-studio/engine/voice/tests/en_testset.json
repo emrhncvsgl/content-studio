@@ -1,0 +1,14 @@
+{
+  "lang": "en",
+  "note": "tr_testset.json ile aynı yapı. 'tagged' alanı Turbo paralinguistik etiketli varyanttır; WER için 'text' (etiketsiz) referans alınır.",
+  "sentences": [
+    {"id": "e1",  "kind": "number",     "text": "In nineteen forty-six, Altshuller began studying forty thousand patents, one by one."},
+    {"id": "e1b", "kind": "number-raw", "text": "In 1946, Altshuller began studying 40,000 patents, one by one."},
+    {"id": "e2",  "kind": "long-words", "text": "Counterintuitively, the most sophisticated innovations often emerge from radical simplification."},
+    {"id": "e3",  "kind": "question",   "text": "So what if the fastest way to solve a problem is to break it into pieces?",
+     "tagged": "[chuckle] So what if the fastest way to solve a problem is to break it into pieces?"},
+    {"id": "e4",  "kind": "emotional",  "text": "Unbelievable, but true: this simple idea transformed an entire industry!",
+     "tagged": "[gasp] Unbelievable, but true: this simple idea transformed an entire industry!"},
+    {"id": "e5",  "kind": "term",       "text": "TRIZ, the theory of inventive problem solving, is built on the analysis of thousands of patents."}
+  ]
+}

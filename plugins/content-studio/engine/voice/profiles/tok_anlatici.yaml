@@ -1,0 +1,29 @@
+# TR ana anlatıcı adayı (kullanıcı seçimi 2026-11-08, R3 kör dinleme "D"). DECISIONS 2026-11-08.
+# Kaynak: alexturkey/voxcpm2-turkce-ses-tasarimi hazir_sesler/tok_anlatici (Apache-2.0). Sentetik tasarım ses: yalnızca metin
+# tarifinden üretildi, hiçbir kişinin kaydından klonlanmadı. Referans + metni "ultimate cloning" ile okunur (sesin kendi tohumu).
+id: tok_anlatici
+description: "VoxCPM2 tasarım sesi 'Tok Sesli Anlatıcı': çok derin, tok, olgun erkek anlatıcı (~111 Hz); ağır, kontrollü, hafif gizemli. Sentetik, gerçek kişi değil."
+refs:
+  tr:
+    wav: voice/refs/tok_anlatici.tr.flac   # 16 kHz: VoxCPM2 referans kodlayıcısı 16 kHz (Kaggle paketi küçük kalsın)
+    text: Ben yılların tecrübesini sesinde taşıyan bir anlatıcıyım. Belgesellerde tarihin büyük anlarını, şehirlerin kuruluşunu
+      ve insanların yolculuklarını anlatırım. Tok ve sakin sesimle en uzun hikâyeyi bile dinletir, her kelimeye ağırlık veririm.
+      Tanıtımlarda, kurumsal filmlerde ve ana haber kuşağında güven veren sesim fark yaratır. Şimdi arkanıza yaslanın,
+      anlatacaklarım daha yeni başlıyor.
+engines:
+  tr: voxcpm2_torch      # PyTorch + CUDA: Kaggle T4 (tools/kaggle_voice.py run); T4'te RTF ~3 (10 dk anlatım ≈ 30 dk/deneme)
+engine_options:
+  voxcpm2_torch:
+    inference_timesteps: 16
+    cfg_value: 2.0
+    # Kesik cümle sonu (R3, EP007 TR): ultimate modda (referans + metni) bazı cümleler ~5.2 sn'de bitiyor. Oran sınırı ve float32
+    # etkisiz; `mode: reference` (tok_anlatici_ref.yaml) tam okuyor. Kesik sahneyi: kaggle_voice.py run --lang tr <bölüm> --
+    # --only sNN --voice tok_anlatici_ref --run <ad>, sonra audio/tr'ye birleştir (DECISIONS 2026-11-08).
+    retry_badcase_ratio_threshold: 12.0
+post_filters: []
+identity: {}             # chatterbox ses kodlayıcısı bu sesi ölçmek için ayarlı değil; kimlik eşiği yok
+defaults:
+  device: cuda
+  takes: 3              # bkz. engine_options notu: erken bitiş riski
+  seed: 2092167506       # sesin kendi okuma tohumu (ses.json okuma_tohumu)
+  scene_gap_s: 0.35

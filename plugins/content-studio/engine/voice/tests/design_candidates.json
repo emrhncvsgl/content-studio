@@ -1,0 +1,12 @@
+{
+  "note": "Belgesel/hikâye anlatıcısı erkek ses adayları. Test metni özel isim içermez, böylece referans klip temiz kalır.",
+  "language": "English",
+  "text": "In nineteen forty-six, a young patent clerk noticed something strange. The world's greatest inventions were not random strokes of genius. They followed hidden patterns. Patterns that anyone could learn. So what if the secret to innovation was hiding in plain sight?",
+  "candidates": [
+    {"id": "A_deep_nature",   "instruct": "Deep, warm male narrator in his fifties, low pitch, rich resonant timbre, slow and deliberate pacing, classic nature documentary storytelling tone, calm authority."},
+    {"id": "B_history_story", "instruct": "Mature male storyteller in his forties, medium-low pitch, warm and intimate, slightly husky voice, measured pace, engaging like a history podcast narrator telling a fascinating story."},
+    {"id": "C_science_doc",   "instruct": "Male documentary narrator in his thirties, clear medium-low voice, confident and curious, modern science documentary tone, crisp diction, moderate pace."},
+    {"id": "D_cinematic_old", "instruct": "Older male narrator in his sixties, deep and slightly gravelly voice, wise and reflective, slow cinematic delivery, like an epic historical documentary."},
+    {"id": "E_plan_default",  "instruct": "Calm, warm male narrator in his forties, medium-low pitch, clear diction, documentary tone."}
+  ]
+}
