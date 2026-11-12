@@ -31,8 +31,10 @@ yazılan `/plugin ...` komutları bu plugin için çalışmıyor (2026-11 deneme
 
 Masaüstü uygulaması ve terminal aynı ayar dosyalarını okur; burada kurulan plugin uygulamada da görünür.
 
-Sonra Code sekmesinde **yeni bir oturum** aç (plugin yeni oturumda yüklenir). Mesaj kutusuna `/content` yazınca
-`content-studio:...` komutları listelenmeli.
+Sonra Code sekmesinde **yeni bir oturum** aç (plugin yeni oturumda yüklenir) ve `/content-studio:studio-setup` yaz.
+Masaüstü uygulaması mesaj kutusunun altında "... burada bir komut değil" diyebilir: uygulamanın kendi komut listesi terminalden
+kurulan plugin'i göstermiyor. **Önemsiz:** mesaj yine Claude'a gider ve Claude komutu çalıştırır. İstersen komut yerine düz
+yazabilirsin: "stüdyoyu kur", "kanalımı kuralım", "yeni bir video yapalım".
 
 ## 2. `/content-studio:studio-setup` (~30-60 dk, çoğu indirme)
 Ne olur:
