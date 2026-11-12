@@ -6,11 +6,12 @@ Remotion render → yayın paketi. Her adımda onay senden; ajanlar işi yapar.
 ## Kurulum (bir kez)
 
 1. **Claude Code** kurulu olsun (masaüstü uygulaması ya da terminal).
-2. Plugin'i ekle (Claude Code içinde):
+2. Plugin'i terminalden ekle (masaüstü uygulamasında: oturumun **Terminal** düğmesi; `claude` yoksa önce
+   `curl -fsSL https://claude.ai/install.sh | bash`):
    ```
-   /plugin marketplace add emrhncvsgl/content-studio
-   /plugin install content-studio@content-studio
+   claude plugin install content-studio --marketplace emrhncvsgl/content-studio
    ```
+   Masaüstü uygulamasının eklenti menüsü kendi eklenen katalogları göstermiyor; ayrıntı [KURULUM.md](KURULUM.md).
    Repo özelse GitHub'da erişim izni verilmiş olmalı (git kimlik bilgilerin çalışıyor olmalı).
 3. Videoların duracağı **boş bir klasör** aç ve Claude Code'u orada başlat.
 4. Sırayla:

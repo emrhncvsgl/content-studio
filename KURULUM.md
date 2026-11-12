@@ -14,21 +14,21 @@ ilk bölüm birkaç oturum.
 ## 1. Plugin'i ekle (~2 dk)
 Code sekmesinde yeni oturum aç (yerel oturum; bulut oturumunda plugin çalışmaz), klasör olarak az önce oluşturduğun klasörü seç.
 
-**Yol A: mesaj kutusundan.** Sırayla yaz:
-```
-/plugin marketplace add emrhncvsgl/content-studio
-/plugin install content-studio@content-studio
-```
-Kapsam sorulursa **Install for you (user scope)** seç: plugin her klasörde hazır olur.
-Marketplace eklendikten sonra uygulamanın kendi menüsünden de kurulabilir: istem kutusunun yanındaki **+** →
-**Add plugins** (ya da **Plugins → Browse plugins**) → `content-studio` → kapsam.
+Kurulum **uygulamanın içindeki terminalden** yapılır. Masaüstü uygulamasının **+ → Add plugins** menüsü ve mesaj kutusuna
+yazılan `/plugin ...` komutları bu plugin için çalışmıyor (2026-11 denemesi: menü yalnızca resmi dizini aratıyor).
 
-**Yol B: uygulamanın içindeki terminalden** (Yol A'daki komutlar açılmazsa). Oturumun başlık çubuğunda **Terminal**'e tıkla
-(ya da Ctrl+`). `claude` komutu yoksa önce Claude Code komut satırını kur, sonra plugin'i:
-```
-curl -fsSL https://claude.ai/install.sh | bash
-claude plugin install content-studio --marketplace emrhncvsgl/content-studio
-```
+1. Oturumun başlık çubuğunda **Terminal**'e tıkla (ya da Ctrl+`).
+2. `claude --version` yaz. "command not found" derse önce Claude Code komut satırını kur, terminali kapatıp yeniden aç:
+   ```
+   curl -fsSL https://claude.ai/install.sh | bash
+   ```
+3. Plugin'i kur (kataloğu da kendisi ekler):
+   ```
+   claude plugin install content-studio --marketplace emrhncvsgl/content-studio
+   ```
+   `Successfully installed plugin: content-studio@content-studio` yazmalı. Bu kurulum her klasörde geçerlidir (user kapsam);
+   yalnızca bu klasörde istersen sonuna `--scope local` ekle.
+
 Masaüstü uygulaması ve terminal aynı ayar dosyalarını okur; burada kurulan plugin uygulamada da görünür.
 
 Sonra Code sekmesinde **yeni bir oturum** aç (plugin yeni oturumda yüklenir). Mesaj kutusuna `/content` yazınca
