@@ -58,7 +58,7 @@ Kurulumdan ÖNCE tek AskUserQuestion turunda sor (detect önerisi ilk seçenek);
    | `kaggle` | Kaggle hesabı + telefon doğrulama + API anahtarı (`~/.kaggle/`), `kaggle` CLI (`uv tool install kaggle`) | Ücretsiz T4, Mac boşta; `voice/kaggle/README.md` |
    | `local` | Chatterbox (torch, ~1.2 GB + model) | 16 GB Mac'te CPU ~1 dk/sahne; NVIDIA'da hızlı |
    | `gemini` | `.env` → `GEMINI_API_KEY` (değeri asla yazdırma) | Hazır sesler; ücretsiz katman günde ~10 istek; `tools/gemini_tts.py` |
-   | `elevenlabs` | Kullanıcının kendi hesabı | Ses dışarıda üretilir, `audio/<dil>/` altına konur (`voice/profiles/external_*.yaml`) |
+   | `elevenlabs` | ElevenLabs hesabı + `.env` → `ELEVENLABS_API_KEY` (kullanıcı kendisi yazar; değeri asla yazdırma) | Sesler otomatik üretilir ve Whisper kontrolünden geçer (`voice/synth.py`, profil `elevenlabs_<dil>.yaml`); karakter başına ücretli. Anahtar yoksa: kullanıcı sesi web arayüzünden üretip `audio/<dil>/` altına koyar (`external_<dil>.yaml`) |
 2. **Kanala özel ses tasarımı** yerelde mi? (yalnızca Apple Silicon; mlx ortamı + Qwen VoiceDesign modeli ilk kullanımda iner, birkaç GB)
    Hayırsa: hazır profil, Gemini hazır sesleri ya da Kaggle'da tasarım.
 3. **İsteğe bağlı araçlar** (multiSelect, hepsi sonradan eklenebilir): fotoğraftan nesne kesme (matte, ~600 MB) ·

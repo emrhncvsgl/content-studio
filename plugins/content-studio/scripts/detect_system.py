@@ -88,7 +88,7 @@ def main():
     else:
         rec["tts"] = "kaggle"
         rec["tts_why"] = ("Ücretsiz Kaggle T4 (haftada ~30 saat GPU): Mac'i yormaz, tarayıcısız. Kaggle hesabı + API anahtarı gerekir. "
-                          "Alternatif: Gemini TTS (ücretsiz kota, API anahtarı) ya da ElevenLabs (ücretli). "
+                          "Alternatif: Gemini TTS (ücretsiz kota, API anahtarı) ya da ElevenLabs (ücretli, API anahtarıyla otomatik). "
                           + ("Yerel Chatterbox da olur (CPU, ~1 dk/sahne, tepe ~4 GB)." if ram >= 16 else
                              "Bellek 16 GB altında: yerel TTS önerilmez."))
     rec["device"] = "cuda" if nvidia else "cpu"  # MPS tepe bellek ~19 GB (Chatterbox); CPU daha güvenli

@@ -16,9 +16,11 @@ Model bir kez yüklenir. Motor hangi venv'deyse o python ile çalıştırılır:
   chatterbox_*: voice/.venv-chatterbox/bin/python voice/synth.py <script.json> --engine chatterbox_std
   qwen_base:    voice/.venv-mlx/bin/python        voice/synth.py <script.json> --engine qwen_base
   voxcpm2_torch: Kaggle T4'te (tools/kaggle_voice.py run <bölüm> --lang tr); Mac'te yalnızca --gate-only
+  elevenlabs:   voice/.venv-chatterbox/bin/python voice/synth.py <script.json>   (bulut API; hafif kurulum yeter, .env → ELEVENLABS_API_KEY)
 """
 import argparse
 import json
+import os
 import shutil
 import subprocess
 import time
@@ -31,6 +33,18 @@ import yaml
 import textnorm
 
 ROOT = Path(__file__).parent.parent
+
+
+def env_key(name: str) -> str | None:
+    """API anahtarı: önce ortam değişkeni, sonra proje kökündeki .env (git dışı). Değer hiçbir yere yazdırılmaz."""
+    if os.environ.get(name):
+        return os.environ[name]
+    env = ROOT / ".env"
+    if env.exists():
+        for line in env.read_text().splitlines():
+            if line.strip().startswith(f"{name}="):
+                return line.split("=", 1)[1].strip().strip('"').strip("'")
+    return None
 
 
 # ---------- motorlar: generate(text, params, seed) -> float32 mono np.ndarray ----------
@@ -128,6 +142,56 @@ class VoxCPM2TorchEngine:
             text = f"({self.intensify}{params['instruct']}){text}"
         wav = self.model.generate(text=text, reference_wav_path=self.ref, seed=seed, **prompt, **self.opts)
         return np.asarray(wav, dtype=np.float32)
+
+
+class ElevenLabsEngine:
+    """ElevenLabs bulut TTS (https://elevenlabs.io/docs/api-reference/text-to-speech/convert). Anahtar: ELEVENLABS_API_KEY
+    (ortam ya da .env). Ses: ElevenLabs kütüphane/tasarım sesi ya da kullanıcının kendi/izinli sesi; gerçek kişi sesi klonlanmaz.
+    Profil engine_options.elevenlabs: voice_id (zorunlu), model_id (vars. eleven_multilingual_v2), stability, similarity_boost,
+    style, speed, use_speaker_boost. Duygu: senaryonun exaggeration değeri stability'yi aşağı çeker (daha canlı okuma).
+    Ücret karakter başınadır: profil defaults.takes 1 önerilir; kapıyı geçemeyen sahne `--only sNN --takes 2` ile yeniden üretilir.
+    Çıktı pcm_24000 (16 bit mono)."""
+    SR = 24000
+
+    def __init__(self, opts: dict, lang: str):
+        self.key = env_key("ELEVENLABS_API_KEY")
+        if not self.key:
+            raise SystemExit("ELEVENLABS_API_KEY yok: proje kökündeki .env dosyasına ELEVENLABS_API_KEY=... satırını kullanıcı eklemeli")
+        if not opts.get("voice_id"):
+            raise SystemExit("profil engine_options.elevenlabs.voice_id yok (tools/elevenlabs_voices.py list)")
+        self.voice = opts["voice_id"]
+        self.model = opts.get("model_id", "eleven_multilingual_v2")
+        self.base = {"stability": opts.get("stability", 0.5), "similarity_boost": opts.get("similarity_boost", 0.75),
+                     "style": opts.get("style", 0.0), "use_speaker_boost": opts.get("use_speaker_boost", True)}
+        if opts.get("speed"):
+            self.base["speed"] = opts["speed"]
+        self.lang = lang if opts.get("language_code") else None
+        self.sr = self.SR
+
+    def generate(self, text, params, seed):
+        import urllib.error
+        import urllib.request
+        vs = dict(self.base)
+        exag = params.get("exaggeration")
+        if exag is not None:   # emotions.yaml: 0.5 nötr; daha yüksek = daha az kararlı, daha duygulu okuma
+            vs["stability"] = round(min(0.95, max(0.15, vs["stability"] - (exag - 0.5) * 0.5)), 2)
+        body = {"text": text, "model_id": self.model, "seed": int(seed) % 4294967295, "voice_settings": vs}
+        if self.lang:
+            body["language_code"] = self.lang
+        url = f"https://api.elevenlabs.io/v1/text-to-speech/{self.voice}?output_format=pcm_24000"
+        for i in range(4):
+            req = urllib.request.Request(url, data=json.dumps(body).encode(),
+                                         headers={"xi-api-key": self.key, "Content-Type": "application/json"})
+            try:
+                with urllib.request.urlopen(req, timeout=180) as r:
+                    pcm = r.read()
+                return (np.frombuffer(pcm, dtype="<i2").astype(np.float32) / 32768.0)
+            except urllib.error.HTTPError as e:
+                msg = e.read().decode(errors="replace")[:300]
+                if e.code in (429, 500, 502, 503) and i < 3:
+                    time.sleep(6 * (i + 1))
+                    continue
+                raise SystemExit(f"ElevenLabs hata {e.code}: {msg}")
 
 
 # ---------- ses işleme ----------
@@ -306,7 +370,7 @@ def gate_only(script, out, ep_dir, profile, ref_wav, gap):
     report = json.loads((out / "report.json").read_text())
     min_sim = profile.get("identity", {}).get("min_similarity")
     speaker = None
-    if min_sim is not None:
+    if min_sim is not None and ref_wav:
         try:
             speaker = SpeakerCheck(ref_wav)
         except ImportError:  # hafif kurulum (chatterbox/torch yok): kimlik kontrolü atlanır, WER/kesik kontrolleri sürer
@@ -400,7 +464,7 @@ def merge_speakers(script, out, ep_dir, runs, gap):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("script", help="script.<dil>.json")
-    ap.add_argument("--engine", choices=["chatterbox_std", "chatterbox_mtl", "qwen_base", "voxcpm2", "voxcpm2_torch"])
+    ap.add_argument("--engine", choices=["chatterbox_std", "chatterbox_mtl", "qwen_base", "voxcpm2", "voxcpm2_torch", "elevenlabs"])
     ap.add_argument("--run", default=None, help="çıktı klasörü adı (audio/_trials/<run>); yoksa audio/<dil>")
     ap.add_argument("--takes", type=int, default=None)
     ap.add_argument("--seed", type=int, default=None, help="taban seed (profil defaults.seed yerine; yeni denemeler için)")
@@ -427,8 +491,9 @@ def main():
     takes = args.takes or d["takes"]
     device = args.device or d["device"]
     engine_name = args.engine or profile["engines"][lang]
-    ref = profile["refs"].get(lang) or profile["refs"]["en"]  # TR referansı yoksa EN (R2)
-    ref_wav = str(ROOT / ref["wav"])
+    refs = profile.get("refs") or {}
+    ref = refs.get(lang) or refs.get("en") or {}  # TR referansı yoksa EN (R2); bulut motorlarında (elevenlabs) referans yok
+    ref_wav = str(ROOT / ref["wav"]) if ref.get("wav") else None
 
     ep_dir = script_path.parent
     out = ep_dir / "audio" / ("_trials/" + args.run if args.run else lang)
@@ -447,26 +512,30 @@ def main():
         engine = VoxCPM2Engine(ref_wav, lang)
     elif engine_name == "voxcpm2_torch":
         engine = VoxCPM2TorchEngine(ref_wav, ref["text"], profile.get("engine_options", {}).get("voxcpm2_torch", {}))
+    elif engine_name == "elevenlabs":
+        engine = ElevenLabsEngine(profile.get("engine_options", {}).get("elevenlabs", {}), lang)
     else:
         steps = profile.get("engine_options", {}).get("chatterbox", {}).get("vocoder_steps")
         engine = ChatterboxEngine(engine_name, device, ref_wav, lang, vocoder_steps=steps)
     post_filters = profile.get("post_filters", [])
     min_sim = profile.get("identity", {}).get("min_similarity")
     speaker = None
-    if min_sim is not None:
+    if min_sim is not None and ref_wav:
         try:
             speaker = SpeakerCheck(ref_wav)
         except ImportError:  # qwen (mlx) venv'inde chatterbox yok: kimlik kontrolü atlanır
             print("[warn] ses kimliği kontrolü bu venv'de yok, atlandı")
     load_s = time.time() - t0
+    if engine_name == "elevenlabs":
+        device = "cloud"
     if engine_name in ("qwen_base", "voxcpm2"):
         device = "mlx"  # MLX motorları Apple GPU'da çalışır, --device yok sayılır
-    print(f"[load] {engine_name} {device} {load_s:.1f}s ref={ref['wav']}")
+    print(f"[load] {engine_name} {device} {load_s:.1f}s ref={ref.get('wav')}")
 
     pron = textnorm.load_pronunciation(lang)
     report = {"episode": script["episode"], "lang": lang, "voice": voice, "engine": engine_name, "device": device,
-              "ref": ref["wav"], "takes": takes, "cfg_override": args.cfg_override, "load_s": round(load_s, 1),
-              "vocoder_steps": None if engine_name in ("qwen_base", "voxcpm2", "voxcpm2_torch") else (steps or 10),
+              "ref": ref.get("wav"), "takes": takes, "cfg_override": args.cfg_override, "load_s": round(load_s, 1),
+              "vocoder_steps": None if engine_name in ("qwen_base", "voxcpm2", "voxcpm2_torch", "elevenlabs") else (steps or 10),
               "post_filters": post_filters, "min_similarity": min_sim if speaker else None, "asr": not args.no_asr, "scenes": []}
     prev = {}
     if args.only and (out / "report.json").exists():  # kısmi yeniden üretim: diğer sahneler korunur

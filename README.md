@@ -28,13 +28,15 @@ Tasarım dilini sonradan değiştirmek için: `/content-studio:design-language`.
 - **Önerilen:** Apple Silicon Mac, 16 GB bellek, ~20 GB boş disk. Diğer sistemler de olur; `studio-setup` farkları söyler
   (Windows'ta WSL2 önerilir).
 - **Ses için** biri: ücretsiz **Kaggle** hesabı (T4 GPU, önerilen) · yerel (NVIDIA GPU ya da yavaş CPU) · **Gemini** API anahtarı ·
-  **ElevenLabs** (sesi kendin üretip klasöre koyarsın).
+  **ElevenLabs** (API anahtarıyla otomatik; anahtar yoksa sesi kendin üretip klasöre koyarsın).
 - Remotion lisansı: bireyler ve en fazla 3 kişilik şirketler için ücretsiz; daha büyük şirketler şirket lisansı alır (remotion.dev/license).
 
 ## Güncelleme
 
+Terminalde (masaüstü uygulamasında oturumun **Terminal** düğmesi):
 ```
-/plugin marketplace update content-studio
+claude plugin marketplace update content-studio
+claude plugin update content-studio@content-studio
 ```
 Sonra proje klasöründe `/content-studio:studio-setup --update`: motoru yeniler; senin elle değiştirdiğin dosyaları ezmez,
 yeni sürümü yanına `.yeni` olarak koyar ve birleştirmeyi önerir.

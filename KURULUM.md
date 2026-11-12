@@ -76,6 +76,7 @@ Editörde açmak için: Claude'a "editörü aç" de (`localhost:3100`; sahne aya
 
 ## Sık sorulanlar
 - **Tasarımı sonradan değiştirmek:** `/content-studio:design-language` (ya da yalnızca bir kısmı: "geçişleri sakinleştir").
-- **Güncelleme:** `/plugin marketplace update content-studio`, sonra klasörde `/content-studio:studio-setup --update`.
+- **Güncelleme:** terminalde `claude plugin marketplace update content-studio` ve `claude plugin update content-studio@content-studio`,
+  sonra yeni oturumda klasörde `/content-studio:studio-setup --update`.
   Elle değiştirdiğin dosyalar ezilmez.
 - **Ne yüklenmez:** gerçek kişi sesi klonlanmaz; lisansı belirsiz görsel kullanılmaz; her varlık `assets.csv`'ye yazılır.

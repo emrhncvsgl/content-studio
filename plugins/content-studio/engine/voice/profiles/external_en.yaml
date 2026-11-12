@@ -1,6 +1,7 @@
-# Dış ses: ElevenLabs (kullanıcı kendi hesabından üretir, mp3 olarak verir). synth.py bu profille üretim yapmaz.
+# Dış ses: kullanıcı sesi kendisi üretir (ElevenLabs web arayüzü, kendi kaydı vb.) ve dosya olarak verir; synth.py üretmez.
+# API anahtarı varsa bunun yerine elevenlabs_<dil>.yaml kullan (otomatik üretim + Whisper kontrolü).
 # Ses dosyası sonradan audio/<dil>/ altına yerleştirilir (klip önce sessiz render edilebilir).
 id: external_en
 engine: external
 lang: en
-source: ElevenLabs (kullanıcı)
+source: dış (kullanıcı)

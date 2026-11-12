@@ -1,0 +1,21 @@
+# ElevenLabs API ile anlatıcı (en). Kopyala → voice/profiles/<kanal>_narrator.yaml, voice_id'yi yaz, channel.yaml voice.default'a ver.
+# Ses seçimi: voice/.venv-chatterbox/bin/python tools/elevenlabs_voices.py list | audition (kütüphane/tasarım ya da kendi/izinli ses).
+# Anahtar: proje kökündeki .env → ELEVENLABS_API_KEY (git dışı; kullanıcı kendisi yazar). Üretim: voice/synth.py (Mac'te, hafif).
+id: elevenlabs_en
+description: "ElevenLabs sesi (voice_id aşağıda). Sentetik ya da izinli ses; gerçek kişi klonlanmaz."
+engines:
+  en: elevenlabs
+engine_options:
+  elevenlabs:
+    voice_id: ""                       # tools/elevenlabs_voices.py list
+    model_id: eleven_multilingual_v2   # TR ve EN; daha hızlı/ucuz: eleven_flash_v2_5 (language_code: true ile)
+    stability: 0.5                     # düşük = daha duygulu/değişken, yüksek = daha düz/tutarlı
+    similarity_boost: 0.75
+    style: 0.0
+post_filters: []
+identity: {}                           # referans kaydı yok: ses kimliği kontrolü yapılmaz (Whisper kontrolleri sürer)
+defaults:
+  device: cpu
+  takes: 1                             # karakter başına ücret; kapıyı geçemeyen sahne: --only sNN --takes 2
+  seed: 1000
+  scene_gap_s: 0.35

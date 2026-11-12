@@ -75,7 +75,9 @@ kullanıcıya göster, sonra devam et.
 ## 4. Ses
 Motor `channel.yaml voice.backend`'den gelir (`/studio-setup` seçer): `kaggle` (aşağıdaki akış) · `local` (`voice/synth.py` yerelde,
 CUDA varsa `device: cuda`; Mac'te önce sor) · `gemini` (`tools/gemini_tts.py`, kanalın `gemini_voice`/`gemini_style` ayarı, sonra
-`synth.py --choose`/Whisper kapısı) · `elevenlabs`/dış ses (kullanıcı sahne seslerini `audio/<dil>/` altına koyar; sen yalnızca
+`synth.py --choose`/Whisper kapısı) · `elevenlabs` (profilin motoru `elevenlabs` ise Mac'te `voice/.venv-chatterbox/bin/python voice/synth.py
+<bölüm>/script.<dil>.json`: bulutta üretir, Whisper kapısı ve anlatım otomatik; hafif iş, sormadan çalıştırılabilir; takes 1, kapıyı
+geçemeyen sahne `--only sNN --takes 2`) · dış ses (`external_*` profili: kullanıcı sahne seslerini `audio/<dil>/` altına koyar; sen yalnızca
 Whisper kapısı ve anlatım birleştirmesini yaparsın). Alan yoksa `kaggle`.
 - **Kaggle T4, tarayıcısız** (Remote Control ile telefondan da çalışır; `voice/kaggle/README.md`).
   Yalnızca chatterbox motorları. Kullanıcıdan hiçbir elle adım istenmez.
