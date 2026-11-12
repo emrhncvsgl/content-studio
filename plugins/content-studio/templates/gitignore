@@ -45,3 +45,7 @@ content/episodes/_izle/
 # API anahtarları (ElevenLabs vb.), commit edilmez
 .env
 studio/editor/dist/
+
+# Plugin bağlantısı ve önbellek (poster vb.): commit edilmez
+.studio/plugin
+.studio/cache/
