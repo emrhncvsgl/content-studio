@@ -125,7 +125,7 @@ voice/.venv-chatterbox/bin/python voice/textnorm.py        # metin normalleştir
 cd studio && npx tsc --noEmit && npx remotion render src/index.ts Smoke out/smoke.mp4 --concurrency=2   # render (onayla; ağır iş)
 whisper-cli --help > /dev/null && echo whisper ok
 ```
-Render'dan önce kullanıcıya sor (bilgisayarı birkaç dakika meşgul eder). Hata olursa düzelt ve DECISIONS.md'ye yaz.
+Render'dan önce kullanıcıya sor (bilgisayarı birkaç dakika meşgul eder). `Smoke` hiçbir dış dosya gerektirmez (sessiz, yerleşik altyazı); başka kompozisyonla test etme. Hata olursa düzelt ve DECISIONS.md'ye yaz.
 
 ## 6. Bitir
 CLAUDE.md "Ortam" bölümünü sisteme göre doldur (python yolu, ses motoru, cihaz, whisper yolu). Sonra öner:

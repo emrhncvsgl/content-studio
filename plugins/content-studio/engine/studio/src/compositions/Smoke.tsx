@@ -4,19 +4,25 @@ import {
 } from "remotion";
 import { z } from "zod";
 
-// Kurulum duman testi: ses + kelime zamanlı altyazı + basit blueprint çizimi.
-// Kelime zamanları voice/synth.py report.json'dan gelir (sahne içi ms); anlatımda sahneler 0.35 sn boşlukla dizilir.
-export const smokeSchema = z.object({ audio: z.string(), report: z.string() });
+// Kurulum duman testi: basit blueprint çizimi + kelime zamanlı altyazı (+ isteğe bağlı ses).
+// Varsayılan: hiçbir dış dosya gerekmez (yerleşik örnek kelimeler, sessiz) → yeni kurulumda ilk render her zaman çalışır.
+// Ses ile denemek için: --props '{"audio":"<content/ altı>.wav","report":"<content/ altı>/report.json"}' (voice/synth.py çıktısı).
+// Kelime zamanları report.json'dan gelir (sahne içi ms); anlatımda sahneler 0.35 sn boşlukla dizilir.
+export const smokeSchema = z.object({ audio: z.string().optional(), report: z.string().optional() });
+
+const DEMO = "Studio installed. Fonts, captions and rendering all work on this machine.".split(" ")
+  .map((text, i) => ({ text, startMs: 600 + i * 520, endMs: 600 + i * 520 + 480 }));
 
 type Word = { text: string; startMs: number; endMs: number };
 type Take = { take: number; audio_s: number; words: Word[] };
 type Scene = { id: string; chosen: number; takes: Take[] };
 const GAP_S = 0.35;
 
-function useWords(reportPath: string) {
-  const [words, setWords] = useState<Word[] | null>(null);
-  const [handle] = useState(() => delayRender("report.json"));
+function useWords(reportPath?: string) {
+  const [words, setWords] = useState<Word[] | null>(reportPath ? null : DEMO);
+  const [handle] = useState(() => (reportPath ? delayRender("report.json") : null));
   useEffect(() => {
+    if (!reportPath || handle === null) return;
     fetch(staticFile(reportPath))
       .then((r) => r.json())
       .then((rep: { scenes: Scene[] }) => {
@@ -85,7 +91,7 @@ export const Smoke: React.FC<z.infer<typeof smokeSchema>> = ({ audio, report }) 
     <AbsoluteFill>
       <Blueprint />
       {words && <Captions words={words} />}
-      <Audio src={staticFile(audio)} />
+      {audio ? <Audio src={staticFile(audio)} /> : null}
     </AbsoluteFill>
   );
 };

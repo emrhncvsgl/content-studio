@@ -28,6 +28,9 @@ import { DepthPhoto } from "./styles/depth/DepthPhoto";
 
 const FPS = 30;
 
+// NOT (plugin): ShortsVideo, CutoutClip, DepthPhoto, MuseumObject, ManaPromo, Thumbnail gibi kompozisyonların defaultProps'u bu
+// stüdyonun geliştirildiği kanalın örnek bölümlerini gösterir ve yeni kurulumda YOKTUR. Her zaman kendi dosyalarınla --props ver
+// (ör. --props='{"timeline":"episodes/<EP>/timeline.json"}'). Kurulum testi için yalnızca Smoke (dış dosya gerektirmez).
 export const RemotionRoot: React.FC = () => (
   <>
     {/* Ana şablon. Render: npx remotion render src/index.ts ShortsVideo out.mp4 --props='{"timeline":"episodes/<EP>/timeline.json"}' */}
@@ -145,12 +148,9 @@ export const RemotionRoot: React.FC = () => (
       width={1080}
       height={1920}
       durationInFrames={FPS * 10}
-      defaultProps={{
-        audio: "episodes/EP001-segmentation/audio/_trials/blind_cb_A1/narration.wav",
-        report: "episodes/EP001-segmentation/audio/_trials/blind_cb_A1/report.json",
-      } satisfies z.infer<typeof smokeSchema>}
+      defaultProps={{} satisfies z.infer<typeof smokeSchema>}
       calculateMetadata={async ({ props }) => ({
-        durationInFrames: Math.ceil((await getAudioDurationInSeconds(staticFile(props.audio))) * FPS),
+        durationInFrames: props.audio ? Math.ceil((await getAudioDurationInSeconds(staticFile(props.audio))) * FPS) : FPS * 8,
       })}
     />
   </>

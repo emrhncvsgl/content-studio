@@ -72,6 +72,8 @@ Seçimlerle tek sahnelik bir deneme kur: ana stil + bir imza kamera hareketi + b
 - Ana stil yalnızca tarifse: önce `.studio/plugin/skills/style-study/SKILL.md` akışıyla tarifi `studio/src/styles/<id>/`
   bileşenine çevir (`docs/styles/<id>.md` + `.studio/plugin/skills/remotion-styles/<id>.md` eşdeğerini projede `docs/styles/` altına
   yaz), sonra klibi al. Bu uzun bir iştir; kullanıcıya süreyi söyle ve onay al.
+Örnek kompozisyonları (`studio/src/Root.tsx`) varsayılan prop'larıyla render etme: varsayılanlar başka bir kanalın bölümlerini
+gösterir, yeni kurulumda yoktur. Deneme klibi kendi `content/channels/<id>/design/` dosyalarıyla, `--props` ile alınır.
 Klibi kullanıcıya göster (telefonda izleyecekse SendUserFile). Beğenmediği eksene geri dön, yalnızca onu değiştir.
 
 ## 4. Yaz
