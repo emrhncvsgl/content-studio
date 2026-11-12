@@ -25,6 +25,9 @@ from pathlib import Path
 
 import yaml
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from platform_util import remotion  # noqa: E402  (Windows: npx.cmd yerine node + remotion-cli.js)
+
 ROOT = Path(__file__).parent.parent
 # Tepe hedefi −1.5: AAC kodlaması tepeyi ~0.2-0.5 dB yükseltiyor; yayın dosyasında ≤ −1 dBTP kalsın (EP001: −1.0 hedefi −0.8 verdi)
 TARGET_LUFS, TARGET_TP, TARGET_LRA = -14.0, -1.5, 11.0
@@ -191,7 +194,7 @@ def sound_qc(final: Path, tl: dict, out_dir: Path) -> dict:
     subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", str(final), "-lavfi",
                     "aformat=channel_layouts=mono,showspectrumpic=s=1600x600:fscale=log:legend=1", str(spec)], check=False)
     return {"median_lufs": round(med_l, 1), "median_harsh_db": round(med_h, 1), "flags": flags, "scenes": rows,
-            "spectrogram": (str(spec.relative_to(final.parent.parent)) if spec.is_relative_to(final.parent.parent) else str(spec)) if spec.exists() else None}
+            "spectrogram": (spec.relative_to(final.parent.parent).as_posix() if spec.is_relative_to(final.parent.parent) else str(spec)) if spec.exists() else None}
 
 
 def print_qc(qc: dict):
@@ -225,7 +228,7 @@ def make_cover(ep: Path, final: Path, at: float, long: bool) -> str:
     r = ep / "render"
     spec = ep / "clips" / "thumb" / "cover.json"
     if spec.exists():
-        subprocess.run(["npx", "remotion", "still", "src/index.ts", "Thumbnail", str(r / "cover.png"), f"--props={spec}", "--log=error"],
+        subprocess.run([*remotion(), "still", "src/index.ts", "Thumbnail", str(r / "cover.png"), f"--props={spec}", "--log=error"],
                        cwd=ROOT / "studio", check=True)
     else:
         grab = r / ("cover.frame.png" if long and (r / "cover.png").exists() else "cover.png")
@@ -296,7 +299,7 @@ def main():
         "title": old.get("title", "TODO (orkestratör yazar: ≤ 70 karakter, hook ile uyumlu)"),
         "description": old.get("description", "TODO (orkestratör yazar: 2-3 cümle + kaynaklar + atıflar + sentetik ses notu)"),
         "hashtags": old.get("hashtags", []),
-        "files": {"video": str(final.relative_to(ep)), "audio_only": f"render/{epi}.{lang}.wav", "captions": f"captions/{lang}.srt",
+        "files": {"video": final.relative_to(ep).as_posix(), "audio_only": f"render/{epi}.{lang}.wav", "captions": f"captions/{lang}.srt",
                   "cover": cover},
         "duration_s": round(duration(final), 2),
         "loudness": {"source_lufs": float(before["input_i"]), **after, "scenes": qc},

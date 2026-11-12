@@ -25,8 +25,9 @@ Tasarım dilini sonradan değiştirmek için: `/content-studio:design-language`.
 
 ## Gerekenler
 
-- **Önerilen:** Apple Silicon Mac, 16 GB bellek, ~20 GB boş disk. Diğer sistemler de olur; `studio-setup` farkları söyler
-  (Windows'ta WSL2 önerilir).
+- **Önerilen:** Apple Silicon Mac ya da Windows 10/11, 16 GB bellek, ~20 GB boş disk. Linux da olur; `studio-setup` sistemi
+  algılayıp farkları söyler. Windows'ta önce Git for Windows, Geliştirici Modu ve uzun yol desteği gerekir
+  ([KURULUM.md](KURULUM.md) 0b). Ses tasarımı (mlx) yalnızca Apple Silicon'da; diğer sistemlerde ses bulutta ya da hazır seslerle.
 - **Ses için** biri: ücretsiz **Kaggle** hesabı (T4 GPU, önerilen) · yerel (NVIDIA GPU ya da yavaş CPU) · **Gemini** API anahtarı ·
   **ElevenLabs** (API anahtarıyla otomatik; anahtar yoksa sesi kendin üretip klasöre koyarsın).
 - Remotion lisansı: bireyler ve en fazla 3 kişilik şirketler için ücretsiz; daha büyük şirketler şirket lisansı alır (remotion.dev/license).

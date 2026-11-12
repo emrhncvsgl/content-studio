@@ -26,27 +26,50 @@ echo "$PLUGIN"
 ```
 (Kurulum yapılmışsa `.studio/plugin` zaten oraya bağlıdır.)
 
+Sistem Python'u (venv kurulmadan önceki betikler için; Windows'ta `python3` çoğu zaman Microsoft Store kısayoludur ve çalışmaz):
+```
+SYSPY=""; for c in python3 python "py -3"; do $c -c "import sys; assert sys.version_info >= (3, 9)" 2>/dev/null && { SYSPY="$c"; break; }; done
+[ -n "$SYSPY" ] || SYSPY="uv run --no-project --python 3.11 python"   # Python yoksa önce uv kurulur (adım 3, sistem araçları)
+echo "$SYSPY"
+```
+Venv kurulduktan sonra plugin betikleri de stüdyonun Python'uyla çalışır: `voice/.venv-chatterbox/bin/python .studio/plugin/scripts/...`
+(Windows'ta da aynı yol: `make_venv.py` oraya bir yönlendirici yazar).
+
 ## 1. Sistemi algıla (her zaman ilk adım)
 ```
-python3 "$PLUGIN/scripts/detect_system.py"          # insan okur
-python3 "$PLUGIN/scripts/detect_system.py" --json   # sen okursun
+$SYSPY "$PLUGIN/scripts/detect_system.py"          # insan okur
+$SYSPY "$PLUGIN/scripts/detect_system.py" --json   # sen okursun
 ```
 Kullanıcıya kısa tablo göster: sistem, bellek, disk, eksik araçlar, öneri. Sistem beklenmedikse (Windows, 8 GB, GPU'lu Linux)
 bunu açıkça söyle ve önerileri ona göre uyarla:
 - **macOS Apple Silicon** (geliştirildiği ortam): her şey çalışır; ses tasarımı mlx ile yerelde.
 - **macOS Intel**: mlx yok → ses tasarımı Kaggle'da ya da hazır profil; render yavaş (`--concurrency=2`).
 - **Linux + NVIDIA**: yerel CUDA TTS en hızlısı (`device: cuda`); Kaggle gereksiz.
-- **Windows**: WSL2 (Ubuntu) öner; yerel Windows'ta venv yolu `voice\.venv-chatterbox\Scripts\python.exe`, araçların
-  komutlarında `voice/.venv-chatterbox/bin/python` yerine bunu kullan ve CLAUDE.md "Ortam" bölümüne yaz.
+- **Windows** (yerelde desteklenir): Claude Code komutları Git Bash'te çalıştırır, bu yüzden bütün komutlar macOS'takiyle aynıdır.
+  Farklar ve ön koşullar (detect çıktısındaki `windows_setup` listesi; eksik olanları kullanıcıya adım adım yaptır, yönetici
+  gerektirenleri **kullanıcı kendisi** yapar):
+  1. Git for Windows (Git Bash) · 2. Geliştirici Modu (sembolik bağlar) · 3. Uzun yol desteği · 4. Claude Code yerel kurulum (claude.exe).
+  - Araç kurulumu `winget` ile (`install_*` satırları). Homebrew yoktur.
+  - whisper.cpp: hazır Windows paketi (`whisper-bin-x64.zip`, NVIDIA varsa cublas sürümü) indirilir, `whisper-cli.exe` ve
+    `.dll`'leri `voice/bin/` altına çıkarılır (`tools/platform_util.py` orada arar; PATH'e eklemek gerekmez).
+  - Venv'ler yalnızca `make_venv.py` ile kurulur (Windows'ta `<venv>/bin/python` yönlendiricisini yazar ve UTF-8 modunu açar;
+    elle `uv venv` kurulursa yönlendirici için: `$SYSPY "$PLUGIN/scripts/make_venv.py" <venv> --shim-only`).
+  - mlx yok: ses tasarımı Kaggle/Gemini/ElevenLabs ya da hazır profil. NVIDIA varsa yerel CUDA TTS hızlıdır (`core.txt`, cihaz `cuda`).
+  - Bellek bekçisi `tools/memwatch.py` (Windows'ta da çalışır). Render GPU'su ANGLE/Direct3D.
+  - Sorun çıkarsa WSL2 (Ubuntu) alternatiftir; orada Linux yolu izlenir.
 - **< 16 GB bellek**: yerel TTS yok, render `--concurrency=1`, ağır işler buluta.
 
 ## 2. Motoru kopyala
 Klasör boş değilse önce içeriğine bak; başka bir projenin içine kurma (kullanıcıya sor).
 ```
-python3 "$PLUGIN/scripts/install_engine.py" . --dry-run     # ne yazılacak
-python3 "$PLUGIN/scripts/install_engine.py" .               # ilk kurulum
-python3 "$PLUGIN/scripts/install_engine.py" . --update      # plugin güncellemesinden sonra
+$SYSPY "$PLUGIN/scripts/install_engine.py" . --dry-run     # ne yazılacak
+$SYSPY "$PLUGIN/scripts/install_engine.py" .               # ilk kurulum
+$SYSPY "$PLUGIN/scripts/install_engine.py" . --update      # plugin güncellemesinden sonra
 ```
+`--update` sonrası ayar birleştirme: `.claude/settings.json` kullanıcınındır ve ezilmez; plugin'deki sürümle
+(`"$PLUGIN/engine/.claude/settings.json"`) karşılaştır, eksik `env` anahtarlarını (ör. `PYTHONUTF8`) ve eksik `permissions.allow`
+satırlarını ekle, kullanıcının eklediklerine dokunma. Windows'ta venv'lerde `bin/python` yönlendiricisi yoksa
+`make_venv.py <venv> --shim-only` ile yaz.
 `--update` çakışma bildirirse (`<dosya>.yeni`): iki sürümü karşılaştır, kullanıcının değişikliğini koruyarak birleştir, `.yeni`'yi
 kullanıcı onayıyla sil. `git init` yoksa öner (bölümler büyük; `.gitignore` render/ses çıktılarını dışarıda tutar).
 
@@ -82,7 +105,7 @@ cümle ve süre kontrolleri sürer). Sonradan yerel TTS istenirse aynı venv'e `
 sütunlar *ne işe yarar · boyut · zorunlu mu*. Sade açıklamalar (yalnızca kurulacak olanları göster):
 | Parça | Ne işe yarar (kullanıcıya böyle anlat) |
 |---|---|
-| Homebrew / uv / Python 3.11 / Node | Diğer her şeyi kuran ve çalıştıran temel araçlar |
+| Homebrew (macOS) / winget + Git for Windows (Windows) / uv / Python 3.11 / Node | Diğer her şeyi kuran ve çalıştıran temel araçlar |
 | ffmpeg | Ses ve videoyu kesip birleştirir, dönüştürür; neredeyse her adım kullanır |
 | whisper.cpp + Whisper modeli | Anlatımı dinleyip yazıya döker: altyazıların kelime kelime zamanlaması ve sesin doğru okunup okunmadığının kontrolü |
 | Python ortamı (hafif) | Stüdyonun araçları: senaryo/storyboard doğrulama, ses kontrolü, miks, yayın paketi |
@@ -98,16 +121,19 @@ Tablonun altında toplam indirme ve tahmini süre. Sonra seçenekler:
 3. **Şimdi değil**: hiçbir şey kurulmaz; kanal kurulumu ve video üretimi bunlar olmadan çalışmaz. Sonra
    `/content-studio:studio-setup` kaldığı yerden devam eder.
 
-Komutlar (uv yoksa `python3.11 -m venv` + pip; adı her durumda `.venv-chatterbox`, araçlar bu yolu bekler):
+Komutlar (her işletim sisteminde aynı; venv adları sabit, araçlar bu yolları bekler):
 ```
-uv venv --python 3.11 voice/.venv-chatterbox
-uv pip install --python voice/.venv-chatterbox/bin/python -r "$PLUGIN/scripts/requirements/core-light.txt"   # ya da core.txt
-uv venv --python 3.11 voice/.venv-mlx && uv pip install --python voice/.venv-mlx/bin/python -r "$PLUGIN/scripts/requirements/mlx.txt"
-# isteğe bağlı: matte.txt → tools/.venv-matte, manim.txt → tools/.venv-manim, sam2.txt → tools/.venv-sam2
-cd studio && npm ci
+$SYSPY "$PLUGIN/scripts/make_venv.py" voice/.venv-chatterbox core-light    # ya da core (yerel TTS)
+$SYSPY "$PLUGIN/scripts/make_venv.py" voice/.venv-mlx mlx                  # yalnızca Apple Silicon, ses tasarımı
+# isteğe bağlı: make_venv.py tools/.venv-matte matte · tools/.venv-manim manim · tools/.venv-sam2 sam2
+(cd studio && npm ci)
 mkdir -p voice/models && curl -L -o voice/models/ggml-large-v3-turbo-q5_0.bin \
   https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3-turbo-q5_0.bin
+uv tool install kaggle                                                      # yalnızca kaggle motoru
 ```
+Windows whisper.cpp (Homebrew yerine): kullanıcıya github.com/ggml-org/whisper.cpp/releases sayfasından `whisper-bin-x64.zip`'i
+indirmesini söyle (dosya indirmeyi sen yapma; onaylı olarak `curl -L -o` ile de olur), sonra `mkdir -p voice/bin` ve zip içindeki
+`whisper-cli.exe` + `*.dll` dosyalarını oraya çıkar (`unzip -j <zip> '*/whisper-cli.exe' '*.dll' -d voice/bin` ya da Explorer).
 Remotion lisansı: bireyler ve ≤3 kişilik şirketler ücretsiz; daha büyük şirketler şirket lisansı alır (remotion.dev/license).
 Kullanıcıya bir cümleyle söyle.
 Fontlar (OFL, ağsız render için): `voice/.venv-chatterbox/bin/python tools/fetch_fonts.py`.
@@ -123,12 +149,14 @@ Motor sonradan değişirse (ör. elevenlabs → local) yalnızca eksik parçayı
 voice/.venv-chatterbox/bin/python -c "import yaml, numpy, librosa, soundfile; print('python ok')"
 voice/.venv-chatterbox/bin/python voice/textnorm.py        # metin normalleştirme örneği
 cd studio && npx tsc --noEmit && npx remotion render src/index.ts Smoke out/smoke.mp4 --concurrency=2   # render (onayla; ağır iş)
-whisper-cli --help > /dev/null && echo whisper ok
+voice/.venv-chatterbox/bin/python -c "import sys; sys.path.insert(0, 'tools'); from platform_util import whisper_cli; print('whisper', whisper_cli())"
+voice/.venv-chatterbox/bin/python tools/memwatch.py          # bellek bekçisi (boş bellek yüzdesi)
 ```
 Render'dan önce kullanıcıya sor (bilgisayarı birkaç dakika meşgul eder). `Smoke` hiçbir dış dosya gerektirmez (sessiz, yerleşik altyazı); başka kompozisyonla test etme. Hata olursa düzelt ve DECISIONS.md'ye yaz.
 
 ## 6. Bitir
-CLAUDE.md "Ortam" bölümünü sisteme göre doldur (python yolu, ses motoru, cihaz, whisper yolu). Sonra öner:
+CLAUDE.md "Ortam" bölümünü sisteme göre doldur (işletim sistemi, ses motoru, cihaz, whisper yolu; Windows'ta Geliştirici Modu
+ve uzun yol durumu). Python yolu her sistemde `voice/.venv-chatterbox/bin/python`'dur. Sonra öner:
 "Kanalını kuralım mı? → `/content-studio:new-channel`". Kanal zaten varsa (`channel.yaml`) `/content-studio:shorts`.
 
 ## İsteğe bağlı: Lemo-Opuscar 2.0 stilleri

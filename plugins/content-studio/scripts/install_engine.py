@@ -16,8 +16,13 @@ import hashlib
 import json
 import os
 import shutil
+import subprocess
 import sys
 from pathlib import Path
+
+if hasattr(sys.stdout, "reconfigure"):  # Windows konsolu (cp1252) Türkçe çıktıda hata vermesin
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 PLUGIN = Path(__file__).resolve().parent.parent
 ENGINE = PLUGIN / "engine"
@@ -49,7 +54,7 @@ def main():
     target = Path(args[0] if args else ".").resolve()
     target.mkdir(parents=True, exist_ok=True)
     mf_path = target / ".studio" / "engine-manifest.json"
-    manifest = json.loads(mf_path.read_text()) if mf_path.exists() else {}
+    manifest = json.loads(mf_path.read_text(encoding="utf-8")) if mf_path.exists() else {}
     if manifest and not update:
         sys.exit(f"Bu klasörde motor zaten kurulu ({mf_path}). Yenilemek için --update.")
 
@@ -86,7 +91,8 @@ def main():
             new_manifest[rel] = manifest.get(rel, h_dst)
 
     # Şablonlar: yalnızca yoksa
-    tpl = {"CLAUDE.md": "CLAUDE.md", "gitignore": ".gitignore", "channel.yaml": "channel.yaml.example"}
+    tpl = {"CLAUDE.md": "CLAUDE.md", "gitignore": ".gitignore", "gitattributes": ".gitattributes",
+           "channel.yaml": "channel.yaml.example"}
     for name, out in tpl.items():
         s, d = TEMPLATES / name, target / out
         if s.exists() and not d.exists():
@@ -99,29 +105,38 @@ def main():
             (target / "content" / d).mkdir(parents=True, exist_ok=True)
         fm = target / "content" / "fonts" / "manifest.json"   # studio/src/fonts.ts okur; tools/fetch_fonts.py doldurur
         if not fm.exists():
-            fm.write_text("[]\n")
+            fm.write_text("[]\n", encoding="utf-8")
         ideas = target / "content" / "ideas.yaml"
         if not ideas.exists():
-            ideas.write_text("# Konu fikir havuzu (/shorts konu keşfi yazar): {id, title, status, why, source_id, hook, sources, date}\n[]\n")
+            ideas.write_text("# Konu fikir havuzu (/shorts konu keşfi yazar): {id, title, status, why, source_id, hook, sources, date}\n[]\n", encoding="utf-8")
         dec = target / "docs" / "DECISIONS.md"
         if not dec.exists():
             dec.parent.mkdir(parents=True, exist_ok=True)
-            dec.write_text("# Kararlar ve test sonuçları (en yenisi üstte)\n\n")
+            dec.write_text("# Kararlar ve test sonuçları (en yenisi üstte)\n\n", encoding="utf-8")
         # .studio/plugin → plugin kökü (skill'ler alt dosyalarını ve library/'yi bu yoldan okur)
         link = target / ".studio" / "plugin"
         link.parent.mkdir(parents=True, exist_ok=True)
-        if link.is_symlink() or link.exists():
-            if link.is_symlink():
-                link.unlink()
-            else:
-                shutil.rmtree(link)
+        # Eski bağı kaldır. DİKKAT: bağın hedefi plugin'in kendisidir; rmtree asla bir bağın içine girmemeli.
+        if link.is_symlink():
+            link.unlink()
+        elif hasattr(os.path, "isjunction") and os.path.isjunction(link):
+            os.rmdir(link)                         # junction: yalnızca bağ kalkar, hedef durur
+        elif link.exists():
+            try:
+                os.rmdir(link)                     # Python 3.11'de junction boş dizin gibi kalkar (hedef silinmez)
+            except OSError:
+                shutil.rmtree(link)                # gerçek kopya (son çare yolundan kalmış)
         try:
             link.symlink_to(PLUGIN, target_is_directory=True)
-        except OSError:                          # Windows: sembolik bağ izni yoksa kopya
-            shutil.copytree(PLUGIN, link, ignore=shutil.ignore_patterns("engine"))
+        except OSError:
+            # Windows: sembolik bağ için Geliştirici Modu ya da yönetici gerekir. Dizin bağlantısı (junction) izinsiz çalışır.
+            r = subprocess.run(["cmd", "/c", "mklink", "/J", str(link), str(PLUGIN)], capture_output=True) \
+                if sys.platform == "win32" else None
+            if not r or r.returncode != 0:      # son çare: kopya (--update her seferinde yeniler)
+                shutil.copytree(PLUGIN, link, ignore=shutil.ignore_patterns("engine"))
         (target / ".studio" / "plugin-version").write_text(
-            json.loads((PLUGIN / ".claude-plugin" / "plugin.json").read_text())["version"] + "\n")
-        mf_path.write_text(json.dumps(new_manifest, indent=1, sort_keys=True))
+            json.loads((PLUGIN / ".claude-plugin" / "plugin.json").read_text(encoding="utf-8"))["version"] + "\n")
+        mf_path.write_text(json.dumps(new_manifest, indent=1, sort_keys=True), encoding="utf-8")
 
     tag = "(deneme, hiçbir şey yazılmadı) " if dry else ""
     print(f"{tag}Hedef: {target}")

@@ -61,10 +61,10 @@ def pack(args):
     files = list(dict.fromkeys(files))
     pron = ROOT / "catalog" / f"pronunciation.{args.lang}.yaml"
     files += [pron] if pron.exists() else []
-    manifest = {"episode": ep.name, "lang": args.lang, "script": str(script.relative_to(ROOT)),
-                "out": str((ep / "audio" / out_name(args)).relative_to(ROOT)), "extra_args": args.extra}
+    manifest = {"episode": ep.name, "lang": args.lang, "script": script.relative_to(ROOT).as_posix(),
+                "out": (ep / "audio" / out_name(args)).relative_to(ROOT).as_posix(), "extra_args": args.extra}
     if jobs:
-        manifest["jobs"] = [{"extra_args": ex, "out": str((ep / "audio" / ("_trials/" + ex[ex.index("--run") + 1])).relative_to(ROOT))}
+        manifest["jobs"] = [{"extra_args": ex, "out": (ep / "audio" / ("_trials/" + ex[ex.index("--run") + 1])).relative_to(ROOT).as_posix()}
                             for ex in jobs]
     dest = ep / "audio" / "_colab" / f"bundle.{args.lang}.zip"
     dest.parent.mkdir(parents=True, exist_ok=True)

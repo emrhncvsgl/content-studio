@@ -17,12 +17,16 @@ import shutil
 import subprocess
 from pathlib import Path
 
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from platform_util import remotion  # noqa: E402  (Windows: npx.cmd yerine node + remotion-cli.js)
+
 ROOT = Path(__file__).resolve().parent.parent
 STUDIO = ROOT / "studio"
 
 
 def remotion(args: list[str]):
-    subprocess.run(["npx", "remotion", "render", "src/index.ts", "ShortsVideo", *args, "--timeout=180000", "--log=error"],
+    subprocess.run([*remotion(), "render", "src/index.ts", "ShortsVideo", *args, "--timeout=180000", "--log=error"],
                    cwd=STUDIO, check=True)
 
 
@@ -37,7 +41,7 @@ def main():
     ap.add_argument("--audio-from", help="yalnız ses değişti (müzik/sfx): bu videonun görüntüsü korunur, yalnız ses render edilip birleşir (~3 dk)")
     a = ap.parse_args()
     ep = next((ROOT / "content" / "episodes").glob(f"{a.episode}*"))
-    tl_rel = str((ep / "timeline.json").relative_to(ROOT / "content"))
+    tl_rel = (ep / "timeline.json").relative_to(ROOT / "content").as_posix()
     tl = json.loads((ep / "timeline.json").read_text())
     total = sum(s["durationFrames"] for s in tl["scenes"])
     lo, hi = (map(int, a.frames.split("-")) if a.frames else (0, total - 1))

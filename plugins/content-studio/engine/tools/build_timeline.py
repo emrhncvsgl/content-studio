@@ -654,7 +654,7 @@ def pick_music(choice: str, emotions: list[str], total_frames: int, narration_lu
     base = (narration_lufs - MUSIC_GAP_DB) - music_lufs + t.get("gain_db_offset", 0)
     # under_voice_db (music.yaml, isteğe bağlı): konuşurken anlatımın kaç dB altında (varsayılan 14). Hüzünlü/yavaş parça öne çıkmasın diye artırılır.
     under = t.get("under_voice_db", MUSIC_UNDER_VOICE_DB)
-    return {"file": str(path.relative_to(ROOT / "content")), "gainDb": round(base, 1), "duckDb": -(under - MUSIC_GAP_DB),
+    return {"file": path.relative_to(ROOT / "content").as_posix(), "gainDb": round(base, 1), "duckDb": -(under - MUSIC_GAP_DB),
             "fadeInFrames": FPS, "fadeOutFrames": round(1.5 * FPS), "measured": {"music_lufs": music_lufs, "narration_lufs": narration_lufs},
             "_steady": bool(t.get("steady"))}
 
@@ -685,7 +685,7 @@ def main():
     report = json.loads((ep / "audio" / lang / "report.json").read_text())
     rep_by_id = {s["id"]: s for s in report["scenes"]}
     fmt = channel["formats"][brief.get("format", "short")]
-    rel = lambda p: str(p.relative_to(ROOT / "content"))  # noqa: E731
+    rel = lambda p: p.relative_to(ROOT / "content").as_posix()  # noqa: E731
 
     scenes, frame, scene_sfx = [], 0, {}
     transition_sfx = script.get("transition_sfx", "whoosh")

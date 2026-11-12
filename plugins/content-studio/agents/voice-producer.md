@@ -11,7 +11,8 @@ Girdi: `<bölüm>/script.<dil>.json` (her aktif dil). Çıktı: `<bölüm>/audio
 
 ## Adımlar
 1. Profilin (`script.voice`) o dil için motoru var mı kontrol et (`voice/profiles/<id>.yaml → engines`). Yoksa dur ve bildir.
-2. Boş bellek kontrolü (`memory_pressure | tail -1`). Başka ağır iş (render, TTS) çalışıyorsa bekle.
+2. Boş bellek kontrolü (`voice/.venv-chatterbox/bin/python tools/memwatch.py --min 15`; çıkış 1 = yetersiz). Arka plan işinde
+   bekçi: `tools/memwatch.py --guard <PID> --min 10`. Başka ağır iş (render, TTS) çalışıyorsa bekle.
 3. Tam bölüm sesi kanalın `voice.backend` motoruyla üretilir (vars. Kaggle: `tools/kaggle_voice.py run`; yedek Colab (orkestratör `tools/colab_voice.py pack/unpack`; `voice/colab/README.md`).
    `audio/<dil>/report.json` zaten varsa 4. adıma geç. Yoksa (GPU yok, motor chatterbox değil) `voice/synth.py <script>`'i **arka planda** çalıştır (≈ 1 dk/sahne/deneme), bitince `report.json`'u oku.
 4. Eşik dışı sahneler (skill tablosu) için `--only sNN` ile en fazla 2 tur yeniden üret; telaffuz sorunu ise önce sözlüğü düzelt.

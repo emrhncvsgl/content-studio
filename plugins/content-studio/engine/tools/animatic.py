@@ -44,7 +44,7 @@ def main():
     out = ep / "render" / f"{tl['episode']}.animatic{tag}.mp4"
     with tempfile.TemporaryDirectory() as td:
         td = Path(td)
-        tl_rel = str((ep / "timeline.json").relative_to(ROOT / "content"))
+        tl_rel = (ep / "timeline.json").relative_to(ROOT / "content").as_posix()
         print(f"[animatic] {len(frames)} kare ({len(scenes)} sahne), ölçek {a.scale}", flush=True)
         subprocess.run(["node", "scripts/stills.mjs", tl_rel, str(td), str(a.scale), ",".join(map(str, frames))], cwd=ROOT / "studio", check=True)
         wav = td / "mix.wav"

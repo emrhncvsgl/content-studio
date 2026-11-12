@@ -9,6 +9,9 @@ import re
 import subprocess
 import tempfile
 from pathlib import Path
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent / "../.." / "tools"))
+from platform_util import whisper_cli  # noqa: E402
 
 MODEL = Path(__file__).parent.parent / "models" / "ggml-large-v3-turbo-q5_0.bin"
 
@@ -35,7 +38,7 @@ def transcribe(wav: Path, lang: str) -> str:
     with tempfile.TemporaryDirectory() as td:
         w16 = Path(td) / "a.wav"
         subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", str(wav), "-ar", "16000", "-ac", "1", str(w16)], check=True)
-        p = subprocess.run(["whisper-cli", "-m", str(MODEL), "-l", lang, "-nt", "-np", "-f", str(w16)],
+        p = subprocess.run([whisper_cli(), "-m", str(MODEL), "-l", lang, "-nt", "-np", "-f", str(w16)],
                            capture_output=True, text=True, check=True)
     return " ".join(p.stdout.split())
 

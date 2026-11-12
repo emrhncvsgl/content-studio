@@ -104,7 +104,10 @@ const thumb = (id, sid) => {
 
 
 // ---------- düzenleme: editor.overrides.json (+ orig: ilk değerler, geri alma için) · editor.changes.jsonl (Claude'a geri bildirim) ----------
-const PY = path.join(ROOT, "voice/.venv-chatterbox/bin/python");
+// Windows: venv yürütücüsü Scripts/python.exe (bin/python bir Git Bash yönlendiricisidir, Node onu çalıştıramaz).
+const PY = path.join(ROOT, process.platform === "win32" ? "voice/.venv-chatterbox/Scripts/python.exe" : "voice/.venv-chatterbox/bin/python");
+// Python araçları Türkçe metin okur/yazar: Windows'ta varsayılan kodlama cp1252 olduğundan UTF-8 modu her çağrıda açılır.
+const PYENV = { ...process.env, PYTHONUTF8: "1" };
 const CLIP_STYLES = new Set(["object3d", "depth-photo", "woodcut", "lantern", "lantern-text"]);
 const AUDIO_PATH = /^(sfx|music|audio)\b|(^|\.)gainDb$|duckDb/;   // altyazı (words) görüntüye basılır → video yaması, ses değil
 const getPath = (o, p) => p.split(".").reduce((a, k) => (a == null ? undefined : Array.isArray(a) ? a[Number(k)] : a[k]), o);
@@ -162,17 +165,17 @@ const steps = (id, kind, sids) => {
     const src = path.join(dir, `render/${ep}.mp4`), out = path.join(dir, "render/editor/proxy.mp4");
     fs.mkdirSync(path.dirname(out), { recursive: true });
     return [run(["ffmpeg", "-v", "error", "-y", "-i", src, "-vf", "scale=540:-2", "-c:v", "libx264", "-preset", "veryfast", "-crf", "26", "-g", "15", "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart", out + ".tmp.mp4"]),
-      run(["mv", out + ".tmp.mp4", out])];
+      run(["@move", out + ".tmp.mp4", out])];
   }
   if (kind === "clip") return clipSids.length ? [run([PY, "tools/woodcut_render.py", ep, "--only", ...clipSids, "--force"])] : [];
   const base = `render/${ep}.mp4`, backup = `render/${ep}.pre-edit-${Date.now()}.mp4`;
   if (kind === "patch") return [
     ...(clipSids.length ? [run([PY, "tools/woodcut_render.py", ep, "--only", ...clipSids, "--force"])] : []),
-    run(["cp", path.join(dir, base), path.join(dir, backup)]),
+    run(["@copy", path.join(dir, base), path.join(dir, backup)]),
     run([PY, "tools/render_patch.py", ep, "--scenes", ...sids, "--base", backup, "--out", base]),
   ];
   if (kind === "audio") return [
-    run(["cp", path.join(dir, base), path.join(dir, backup)]),
+    run(["@copy", path.join(dir, base), path.join(dir, backup)]),
     run([PY, "tools/mix_audio.py", ep, `render/${ep}.audio.wav`, "--video", backup, "--out", base]),
   ];
   throw new Error(`bilinmeyen iş: ${kind}`);
@@ -185,7 +188,12 @@ const pump = () => {
     const st = j.steps.shift();
     if (!st) { j.status = "done"; j.ended = Date.now(); running = null; return pump(); }
     j.log.push(`$ ${path.basename(st.cmd)} ${st.args.join(" ")}`);
-    const ch = spawn(st.cmd, st.args, { cwd: st.cwd });
+    if (st.cmd === "@copy" || st.cmd === "@move") {   // cp/mv yerine Node (Windows'ta bu komutlar yok)
+      try { st.cmd === "@copy" ? fs.copyFileSync(st.args[0], st.args[1]) : fs.renameSync(st.args[0], st.args[1]); }
+      catch (e) { j.status = "failed"; j.ended = Date.now(); running = null; j.log.push(`[hata] ${e.message}`); return pump(); }
+      return next();
+    }
+    const ch = spawn(st.cmd, st.args, { cwd: st.cwd, env: PYENV });
     const cap = (b) => { j.log.push(...String(b).split("\n").filter(Boolean).slice(-20)); j.log = j.log.slice(-60); };
     ch.stdout.on("data", cap); ch.stderr.on("data", cap);
     ch.on("close", (code) => { if (code !== 0) { j.status = "failed"; j.ended = Date.now(); running = null; j.log.push(`[çıkış ${code}]`); return pump(); } next(); });
@@ -203,7 +211,7 @@ const readBody = (req) => new Promise((ok, no) => { let b = ""; req.on("data", (
 // ---------- medya: bölümün sesleri, görselleri, videoları (kullanıcı: "Finder'dan mı bulacağım") ----------
 const media = (id) => {
   const d = epDir(id); if (!d) return null;
-  const name = path.basename(d), rel = (p) => `episodes/${name}/${path.relative(d, p)}`;
+  const name = path.basename(d), rel = (p) => `episodes/${name}/${path.relative(d, p).split(path.sep).join("/")}`;   // URL yolu: Windows'ta da "/"
   const walk = (dir, out = [], depth = 0) => {
     if (!fs.existsSync(dir) || depth > 4) return out;
     for (const f of fs.readdirSync(dir)) {
@@ -241,13 +249,13 @@ const newEpisode = ({ idea, title, format, channel, answers, direction }) => {
   const args = ["tools/new_episode.py", "--topic", idea.slice(0, 400), "--slug", slugify(title || idea), "--format", format === "long" ? "long" : "short",
     "--notes", `Editörden (Yeni video akışı). Sorular: ${(answers ?? []).map((a) => `${a.q} → ${a.a}`).join(" | ")}. Görsel yön: direction.yaml.`];
   if (channel && channel !== "triz") args.push("--channel", channel); else args.push("--voice", "narrator_v3");
-  const r = spawnSync(PY, args, { cwd: ROOT, encoding: "utf8" });
+  const r = spawnSync(PY, args, { cwd: ROOT, encoding: "utf8", env: PYENV });
   if (r.status !== 0) throw new Error((r.stderr || r.stdout).slice(-400));
   const rel = r.stdout.trim().split("\n").pop().trim();
   const dir = path.join(ROOT, rel);
   fs.writeFileSync(path.join(dir, "direction.yaml"), yaml.dump({ idea, title, format, channel, answers, ...direction }, { lineWidth: 160 }));
-  spawnSync(PY, ["tools/validate.py", "brief", path.join(rel, "brief.yaml")], { cwd: ROOT });
-  spawnSync(PY, ["tools/state.py", "set", rel, "brief", "done"], { cwd: ROOT });
+  spawnSync(PY, ["tools/validate.py", "brief", path.join(rel, "brief.yaml")], { cwd: ROOT, env: PYENV });
+  spawnSync(PY, ["tools/state.py", "set", rel, "brief", "done"], { cwd: ROOT, env: PYENV });
   return { ok: true, id: path.basename(dir) };
 };
 const saveScript = (id, { scenes }) => {
@@ -255,7 +263,7 @@ const saveScript = (id, { scenes }) => {
   for (const e of scenes ?? []) { const s = sc.scenes.find((x) => x.id === e.id); if (s && typeof e.text === "string") s.text = e.text; }
   fs.writeFileSync(p, JSON.stringify(sc, null, 2));
   fs.appendFileSync(path.join(d, "editor.changes.jsonl"), (scenes ?? []).map((e) => JSON.stringify({ ts: new Date().toISOString(), episode: path.basename(d), scene: e.id, path: "script.text", to: e.text })).join("\n") + "\n");
-  const r = spawnSync(PY, ["tools/validate.py", "script", path.relative(ROOT, p)], { cwd: ROOT, encoding: "utf8" });
+  const r = spawnSync(PY, ["tools/validate.py", "script", path.relative(ROOT, p)], { cwd: ROOT, encoding: "utf8", env: PYENV });
   return { ok: r.status === 0, out: (r.stdout + r.stderr).trim().split("\n").slice(-4).join("\n") };
 };
 // stil örneği: o stili kullanan en yeni bölümün o sahnesinden küçük resim
@@ -341,7 +349,7 @@ http.createServer(async (req, res) => {
     if (req.method === "POST" && (m = p.match(/^\/api\/episode\/([^/]+)\/script$/))) return json(res, saveScript(m[1], await readBody(req)));
     if (req.method === "POST" && (m = p.match(/^\/api\/episode\/([^/]+)\/state$/))) {
       const b = await readBody(req), d = epDir(m[1]);
-      const r = spawnSync(PY, ["tools/state.py", "set", path.relative(ROOT, d), b.step, b.status], { cwd: ROOT, encoding: "utf8" });
+      const r = spawnSync(PY, ["tools/state.py", "set", path.relative(ROOT, d), b.step, b.status], { cwd: ROOT, encoding: "utf8", env: PYENV });
       return json(res, { ok: r.status === 0, out: (r.stdout + r.stderr).slice(-400) });
     }
     if ((m = p.match(/^\/api\/episode\/([^/]+)\/media$/))) return json(res, media(m[1]));

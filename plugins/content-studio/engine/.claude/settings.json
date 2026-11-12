@@ -25,7 +25,11 @@
       "WebFetch(domain:upload.wikimedia.org)",
       "WebFetch(domain:patents.google.com)",
       "WebFetch(domain:www.loc.gov)",
-      "WebFetch(domain:images.nasa.gov)"
+      "WebFetch(domain:images.nasa.gov)",
+      "Bash(voice/.venv-chatterbox/bin/python .studio/plugin/scripts/*)",
+      "Bash(python3 tools/memwatch.py*)",
+      "Bash(python tools/memwatch.py*)",
+      "Bash(node studio/editor/server.mjs*)"
     ],
     "ask": [
       "Bash(npm install*)",
@@ -38,5 +42,8 @@
     "deny": [
       "Bash(rm -rf *)"
     ]
+  },
+  "env": {
+    "PYTHONUTF8": "1"
   }
 }

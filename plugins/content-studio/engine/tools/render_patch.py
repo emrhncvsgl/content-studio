@@ -14,6 +14,10 @@ import json
 import subprocess
 from pathlib import Path
 
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from platform_util import remotion  # noqa: E402  (Windows: npx.cmd yerine node + remotion-cli.js)
+
 ROOT = Path(__file__).resolve().parent.parent
 PAD = 30
 
@@ -41,14 +45,14 @@ def main():
             merged[-1][1] = max(merged[-1][1], r[1])
         else:
             merged.append(r)
-    tl_rel = str((ep / "timeline.json").relative_to(ROOT / "content"))
+    tl_rel = (ep / "timeline.json").relative_to(ROOT / "content").as_posix()
     pdir = ep / "render" / "_patch"
     pdir.mkdir(parents=True, exist_ok=True)
     patches = []
     for lo, hi in merged:
         p = pdir / f"p_{lo}-{hi}.mp4"
         print(f"[yama] kare {lo}-{hi} ({(hi - lo + 1) / fps:.1f} sn)", flush=True)
-        subprocess.run(["npx", "remotion", "render", "src/index.ts", "ShortsVideo", str(p), f"--props={json.dumps({'timeline': tl_rel})}",
+        subprocess.run([*remotion(), "render", "src/index.ts", "ShortsVideo", str(p), f"--props={json.dumps({'timeline': tl_rel})}",
                         f"--frames={lo}-{hi}", "--muted", "--timeout=180000", "--log=error"], cwd=ROOT / "studio", check=True)
         patches.append((lo, hi, p))
     # filtre: temel videonun aralıkları + yamalar, kare numarasıyla

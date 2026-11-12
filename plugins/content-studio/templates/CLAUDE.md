@@ -14,7 +14,8 @@ Kararlar ve test sonuçları (en yenisi üstte): [docs/DECISIONS.md](docs/DECISI
 - Ajanlar: script-writer, localizer, voice-producer, visual-director, editor, qa-reviewer (plugin'le gelir).
 
 ## Kurallar
-- Aynı anda yalnızca bir ağır iş (TTS, toplu Whisper, Remotion render). Uzun işler arka planda, bellek bekçisiyle.
+- Aynı anda yalnızca bir ağır iş (TTS, toplu Whisper, Remotion render). Uzun işler arka planda, bellek bekçisiyle
+  (`voice/.venv-chatterbox/bin/python tools/memwatch.py --guard <PID> --min 10`; macOS · Linux · Windows).
 - Gerçek kişi sesi klonlanmaz; yalnızca sentetik tasarım ses ya da izinli kendi ses.
 - ⚠️ işaretli varsayımlar testle kapatılır, sonuç DECISIONS.md'ye yazılır.
 - Onaysız paket kurulmaz, onaysız dosya/model silinmez.
@@ -34,6 +35,6 @@ Kararlar ve test sonuçları (en yenisi üstte): [docs/DECISIONS.md](docs/DECISI
 
 ## Ortam
 <!-- /studio-setup bu bölümü sistemine göre doldurur -->
-- Python araçları: `voice/.venv-chatterbox/bin/python`
+- Python araçları: `voice/.venv-chatterbox/bin/python` (Windows'ta da bu yol: make_venv.py yönlendiricisi; UTF-8 modu açık)
 - Ses motoru: (kurulumda seçilir)
 - whisper.cpp: `whisper-cli`, model `voice/models/ggml-large-v3-turbo-q5_0.bin`

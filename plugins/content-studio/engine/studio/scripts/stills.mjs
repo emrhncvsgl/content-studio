@@ -8,7 +8,7 @@ import path from "node:path";
 const [tl, outDir, scale, frames] = process.argv.slice(2);
 const root = path.resolve(import.meta.dirname, "..");
 const serveUrl = await bundle({ entryPoint: path.join(root, "src/index.ts"), publicDir: path.join(root, "../content"),
-  symlinkPublicDir: true });   // content/ ~GB: kopyalanırsa disk dolar (2026-11-09 ENOSPC)
+  symlinkPublicDir: true });   // Windows: sembolik bağ için Geliştirici Modu açık olmalı (studio-setup söyler)   // content/ ~GB: kopyalanırsa disk dolar (2026-11-09 ENOSPC)
 const inputProps = { timeline: tl };
 const browser = await openBrowser("chrome", { chromiumOptions: { gl: "angle" } });
 const composition = await selectComposition({ serveUrl, id: "ShortsVideo", inputProps, puppeteerInstance: browser, timeoutInMilliseconds: 180000 });   // font indirmesi 30 sn aşabiliyor (EP010)

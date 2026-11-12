@@ -157,7 +157,7 @@ def cmd_get(sid: str, ep: str, name: str | None):
     dur, peak = probe(dst)
     rows = list(csv.DictReader(SOURCES.open())) if SOURCES.exists() else []
     rows = [r for r in rows if r["file"] != dst.name] + [{
-        "file": dst.name, "original": str(src.relative_to(PACKDIR.parent)), "page": PACKS[sid.split('/')[0]][1] or f"https://kenney.nl/assets/{PACKS[sid.split('/')[0]][0]}",
+        "file": dst.name, "original": src.relative_to(PACKDIR.parent).as_posix(), "page": PACKS[sid.split('/')[0]][1] or f"https://kenney.nl/assets/{PACKS[sid.split('/')[0]][0]}",
         "author": "Kenney (kenney.nl)", "license": "CC0 1.0", "attribution_required": "no",
         "processing": f"mono 48k, highpass 60 Hz, tepe -3 dBFS; tools/sounds.py {datetime.date.today()}"}]
     with SOURCES.open("w", newline="") as f:

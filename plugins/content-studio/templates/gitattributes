@@ -1,0 +1,11 @@
+# Windows'ta git satır sonlarını CRLF'e çevirmesin: kabuk betikleri ve Python/Node dosyaları LF kalmalı.
+* text=auto eol=lf
+*.cmd text eol=crlf
+*.bat text eol=crlf
+*.png binary
+*.jpg binary
+*.wav binary
+*.flac binary
+*.mp4 binary
+*.ttf binary
+*.woff2 binary

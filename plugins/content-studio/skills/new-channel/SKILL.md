@@ -31,7 +31,7 @@ kaynaklar). İlk 1-2 kaydı script-writer ajanına doğrulanmış kaynaklarla ha
 `assets.allowed_sources` / `forbidden`: şablondaki güvenli liste + kanala özgü kaynaklar (lisansı okunarak).
 
 ## 2. Anlatıcı sesi
-`channel.yaml voice.backend` (studio-setup seçti; yoksa sor). Seçenekler, sisteme göre (`python3 .studio/plugin/scripts/detect_system.py --json`):
+`channel.yaml voice.backend` (studio-setup seçti; yoksa sor). Seçenekler, sisteme göre (`voice/.venv-chatterbox/bin/python .studio/plugin/scripts/detect_system.py --json`):
 | Yol | Ne zaman | Nasıl |
 |---|---|---|
 | Hazır profil | Hızlı başlamak | `narrator_v3` (EN, sakin belgesel erkek), `tok_anlatici` (TR, derin tok erkek). Sentetik tasarım sesler. Başka kanalla aynı sesi paylaşacağını söyle. |

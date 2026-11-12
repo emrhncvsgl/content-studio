@@ -24,6 +24,10 @@ PLUGIN = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PLUGIN / "scripts"))
 import design_menu  # noqa: E402
 
+if hasattr(sys.stdout, "reconfigure"):  # Windows konsolu (cp1252) Türkçe çıktıda hata vermesin
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 COMMIT = "8814b84c4e0f2c02884ea815eb43b67334aedeb1"
 RAW = f"https://raw.githubusercontent.com/lemomo-ai/lemo-opuscar/{COMMIT}/styles/{{slug}}/poster.jpg"
 CACHE = Path.cwd() / ".studio" / "cache" / "posters"
@@ -62,7 +66,7 @@ def lemo_slug_for(item: dict, lemo_by_name: dict) -> str | None:
     if item["src"] == "lemo":
         return item["id"].split(":", 1)[1]
     if item["src"] == "studio":
-        cat = (design_menu.ENGINE / "catalog" / "styles.yaml").read_text()
+        cat = (design_menu.ENGINE / "catalog" / "styles.yaml").read_text(encoding="utf-8")
         head = re.search(rf"^  {re.escape(item['id'])}:", cat, re.M)
         if not head:
             return None

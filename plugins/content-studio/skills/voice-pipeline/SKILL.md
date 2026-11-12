@@ -52,7 +52,8 @@ Bilinen sınır: konuşmaya bitişik kuyruk sesi kesilemez (t5_emo örneği). Ku
 - Aynı anda tek ağır iş: TTS, toplu Whisper ve Remotion render birlikte çalışmaz.
 - narrator_v2 (Chatterbox Std, CPU, 25 vokoder adımı): tepe ~4 GB, ~1 dk/sahne/deneme → 8 sahne × 2 deneme ≈ 16 dk.
 - MPS (Apple GPU) kullanma: 19 GB tepe, swap. CPU varsayılan.
-- Uzun işleri arka planda çalıştır; boş bellek %10'un altına inerse işi durdur (`memory_pressure`).
+- Uzun işleri arka planda çalıştır; boş bellek %10'un altına inerse işi durdur: `voice/.venv-chatterbox/bin/python tools/memwatch.py --guard <PID> --min 10`
+  (macOS · Linux · Windows; tek ölçüm: `tools/memwatch.py`).
 
 ## Metin kuralları (senaryo için geri bildirim)
 - Rakam yok, yazıyla (TR'de zorunlu).

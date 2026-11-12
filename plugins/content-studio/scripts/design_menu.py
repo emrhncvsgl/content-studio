@@ -2,10 +2,10 @@
 """Tasarım dili menüsü: kanalın görsel/işitsel kimliği seçilirken sunulacak seçenekleri tek, kısa listede toplar.
 
 Kullanım (proje kökünden; düz python3, yalnızca standart kütüphane + varsa PyYAML):
-  python3 .studio/plugin/scripts/design_menu.py                 # tüm bölümler (özet)
-  python3 .studio/plugin/scripts/design_menu.py looks camera    # yalnızca bu bölümler
-  python3 .studio/plugin/scripts/design_menu.py --json          # makine okunur
-  python3 .studio/plugin/scripts/design_menu.py looks --q "charity hope hands craft" --pick 4
+  voice/.venv-chatterbox/bin/python .studio/plugin/scripts/design_menu.py                 # tüm bölümler (özet)
+  voice/.venv-chatterbox/bin/python .studio/plugin/scripts/design_menu.py looks camera    # yalnızca bu bölümler
+  voice/.venv-chatterbox/bin/python .studio/plugin/scripts/design_menu.py --json          # makine okunur
+  voice/.venv-chatterbox/bin/python .studio/plugin/scripts/design_menu.py looks --q "charity hope hands craft" --pick 4
         # kanalın/fikrin kelimeleriyle ara (cinecode yöntemi); --pick N: birbirinden farklı (aile/malzeme) N aday, en az biri hazır
         # İngilizce kelimeler daha iyi eşleşir (tarifler İngilizce); "vox gibi", "ghibli" gibi adlar aliases.json'la eşlenir
 Bölümler: looks (görünüş/stil) · families (görünüm aileleri) · camera · focus · transitions · captions · type (font eşleşmeleri) · sound
@@ -17,6 +17,10 @@ import json
 import re
 import sys
 from pathlib import Path
+
+if hasattr(sys.stdout, "reconfigure"):  # Windows konsolu (cp1252) Türkçe çıktıda hata vermesin
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 PLUGIN = Path(__file__).resolve().parent.parent
 PROJECT = Path.cwd()
@@ -30,7 +34,7 @@ def md_table(path: Path, section: str) -> list[list[str]]:
     if not path.exists():
         return []
     rows, on, seen = [], False, False
-    for line in path.read_text().splitlines():
+    for line in path.read_text(encoding="utf-8").splitlines():
         if line.startswith("## "):
             if on and seen:
                 break
@@ -54,7 +58,7 @@ def clean(s: str) -> str:
 def load_yaml(p: Path):
     try:
         import yaml
-        return yaml.safe_load(p.read_text())
+        return yaml.safe_load(p.read_text(encoding="utf-8"))
     except ImportError:
         return None
 
@@ -69,7 +73,7 @@ def looks():
                         "built": bool(s.get("implemented")), "what": s.get("does", ""), "use": s.get("use_when", ""),
                         "kind": s.get("kind"), "guide": s.get("guide")})
     else:  # PyYAML yok (düz python3): kayıtları satır bloklarından oku
-        txt = (ENGINE / "catalog" / "styles.yaml").read_text()
+        txt = (ENGINE / "catalog" / "styles.yaml").read_text(encoding="utf-8")
         heads = list(re.finditer(r"^  ([a-z0-9-]+):\s+\{ name:", txt, re.M))
         for i, m in enumerate(heads):
             block = txt[m.start(): heads[i + 1].start() if i + 1 < len(heads) else len(txt)]
@@ -81,14 +85,14 @@ def looks():
                         "kind": g("kind").group(1).strip() if g("kind") else None})
     have = {o["id"] for o in out}
     for f in sorted(LEMO.glob("*/style.json")):
-        j = json.loads(f.read_text())
+        j = json.loads(f.read_text(encoding="utf-8"))
         out.append({"id": f"lemo:{j['slug']}", "name": j.get("en"), "src": "lemo", "built": False,
                     "what": j.get("line", ""), "use": ", ".join(j.get("uses", [])), "category": j.get("category_en"),
                     "recipe": f".studio/plugin/library/lemo/styles/{j['slug']}/STYLE.md",
                     "also_in_studio": j["slug"] in have})
     idx = CINE / "styles" / "index.json"
     if idx.exists():
-        cin = json.loads(idx.read_text()).get("styles", [])
+        cin = json.loads(idx.read_text(encoding="utf-8")).get("styles", [])
         extra = {c["id"]: c for c in cin}
         for o in out:                              # Lemo kayıtlarını cinecode'un özetiyle zenginleştir (arama için)
             c = extra.get(o["id"].removeprefix("lemo:"))
@@ -114,7 +118,7 @@ def search(items: list[dict], q: str) -> list[dict]:
     alias_hits = {}
     al = CINE / "styles" / "aliases.json"
     if al.exists():
-        for a in json.loads(al.read_text()).get("aliases", []):
+        for a in json.loads(al.read_text(encoding="utf-8")).get("aliases", []):
             if any(n in q.lower() for n in a.get("names", [])):
                 for rank, sid in enumerate(a.get("styles", [])):
                     alias_hits[sid] = max(alias_hits.get(sid, 0), 6 - rank)
@@ -165,7 +169,7 @@ def transitions():
            for r in md_table(CINE / "references" / "camera-moves.md", "Transitions")]
     t = ENGINE / "studio" / "src" / "components" / "Transitions.tsx"
     if t.exists():
-        m = re.search(r"ADVANCED = \[([^\]]+)\]", t.read_text())
+        m = re.search(r"ADVANCED = \[([^\]]+)\]", t.read_text(encoding="utf-8"))
         if m:
             for k in re.findall(r'"([a-zA-Z]+)"', m.group(1)):
                 out.append({"id": k, "src": "studio", "built": True})
@@ -176,7 +180,7 @@ def captions():
     cat = load_yaml(ENGINE / "catalog" / "styles.yaml") or {}
     caps = cat.get("captions") or {k: v for k, v in (cat.get("styles") or {}).items() if k.startswith("cap-")}
     if not caps:
-        txt = (ENGINE / "catalog" / "styles.yaml").read_text()
+        txt = (ENGINE / "catalog" / "styles.yaml").read_text(encoding="utf-8")
         return [{"id": m.group(1), "name": m.group(2), "what": m.group(3)}
                 for m in re.finditer(r"^\s+(cap-[a-z-]+):\s*\{ name: \"([^\"]+)\", does: \"([^\"]+)\"", txt, re.M)]
     return [{"id": k, "name": v.get("name"), "what": v.get("does"), "built": bool(v.get("implemented"))} for k, v in caps.items()]
@@ -186,7 +190,7 @@ def type_pairs():
     p = CINE / "references" / "type-library.json"
     if not p.exists():
         return []
-    d = json.loads(p.read_text())
+    d = json.loads(p.read_text(encoding="utf-8"))
     fam = {f["id"]: f["family"] for f in d.get("fonts", [])}
     return [{"id": x["id"], "display": fam.get(x["display"], x["display"]), "text": fam.get(x.get("text"), x.get("text")),
              "looks": x.get("looks", []), "purposes": x.get("purposes", []), "turkish": x.get("turkish")} for x in d.get("pairings", [])]
@@ -194,7 +198,7 @@ def type_pairs():
 
 def sound():
     p = CINE / "references" / "sound.md"
-    heads = [l[3:].strip() for l in p.read_text().splitlines() if l.startswith("## ")] if p.exists() else []
+    heads = [l[3:].strip() for l in p.read_text(encoding="utf-8").splitlines() if l.startswith("## ")] if p.exists() else []
     return [{"id": "music_mood", "options": ["sparse piano", "cinematic strings", "ambient bed", "warm acoustic", "pulse/electronic",
                                              "no music (ambience + vocal hum)", "silence-led"]},
             {"id": "sfx_character", "options": ["real foley recordings", "paper/handled objects", "mechanical", "minimal"]},

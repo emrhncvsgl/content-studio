@@ -11,6 +11,9 @@
 import fs from "node:fs";
 import path from "node:path";
 import { spawn } from "node:child_process";
+// Claude Code yürütücüsü. Windows'ta yerel kurulum claude.exe verir (PATH'ten bulunur); npm ile kurulduysa claude.cmd olur ve
+// shell'siz spawn onu bulamaz: o durumda CLAUDE_BIN'e claude.exe'nin tam yolunu ver ya da yerel kurulumu kullan.
+const CLAUDE_BIN = process.env.CLAUDE_BIN || "claude";
 
 const SYS = [
   "Bu oturum Stüdyo Editörü panelinden ekransız çalışıyor; kullanıcı yalnız senin metin mesajlarını görür, yanıtlar Türkçe ve kısa.",
@@ -63,7 +66,7 @@ export const makeClaude = ({ ROOT, epDir }) => {
     if (s.effort && EFFORTS.includes(s.effort)) args.push("--effort", s.effort);
     args.push("--permission-mode", MODES.includes(s.mode) ? s.mode : "acceptEdits");
     if (s.sessionId) args.push("--resume", s.sessionId);
-    const ch = spawn("claude", args, { cwd: ROOT, stdio: ["pipe", "pipe", "pipe"], env: { ...process.env } });
+    const ch = spawn(CLAUDE_BIN, args, { cwd: ROOT, stdio: ["pipe", "pipe", "pipe"], env: { ...process.env } });
     const P = { ch, busy: 0, pending: new Map(), closing: false, model: s.model ?? null, effort: s.effort ?? null, mode: s.mode ?? null };
     procs.set(id, P);
     fs.writeFileSync(lockFile(dir), String(ch.pid));
@@ -168,7 +171,7 @@ export const makeClaude = ({ ROOT, epDir }) => {
       "kısa `why` (neden soruyorum). title: videoya çalışma adı.",
       catalogSummary ? `Bilgi için elimizdeki stiller: ${catalogSummary}` : "",
     ].join("\n");
-    const ch = spawn("claude", ["-p", "--model", "sonnet", "--output-format", "json", "--tools", "", "--json-schema", JSON.stringify(schema)], { cwd: ROOT, stdio: ["pipe", "pipe", "pipe"] });
+    const ch = spawn(CLAUDE_BIN, ["-p", "--model", "sonnet", "--output-format", "json", "--tools", "", "--json-schema", JSON.stringify(schema)], { cwd: ROOT, stdio: ["pipe", "pipe", "pipe"] });
     let out = "", err = "";
     ch.stdout.on("data", (d) => (out += d)); ch.stderr.on("data", (d) => (err += d));
     ch.stdin.end(prompt);

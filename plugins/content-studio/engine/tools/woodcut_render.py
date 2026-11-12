@@ -14,6 +14,9 @@ import subprocess
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from platform_util import remotion  # noqa: E402  (Windows: npx.cmd yerine node + remotion-cli.js)
+
 ROOT = Path(__file__).resolve().parent.parent
 
 
@@ -38,7 +41,7 @@ def main():
         out.parent.mkdir(parents=True, exist_ok=True)
         props = {**{k: p[k] for k in ("variant", "value", "cue", "model", "shot", "up") if k in p}, **p.get("compProps", {}), "durationInFrames": sc["durationFrames"], "words": sc.get("cueWords", sc["words"]).get(lang, [])}
         print(f"[render] {sc['id']} {p['comp']} {sc['durationFrames']} kare → {out.relative_to(ROOT)}")
-        subprocess.run(["npx", "remotion", "render", "src/index.ts", p["comp"], str(out), f"--props={json.dumps(props)}", "--log=error",
+        subprocess.run([*remotion(), "render", "src/index.ts", p["comp"], str(out), f"--props={json.dumps(props)}", "--log=error",
                         "--timeout=120000"],   # Google Fonts indirmesi 30 sn'yi aşabiliyor (EP010, 2026-11-10: s12/s48 zaman aşımı)
                        cwd=ROOT / "studio", check=True)
 

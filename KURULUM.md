@@ -1,6 +1,6 @@
 # Adım adım: sıfırdan ilk videoya
 
-Claude masaüstü uygulamasının **Code** sekmesinde (Mac). Toplam: kurulum ~1 saat (çoğu indirme), kanal kurulumu ~30-45 dk,
+Claude masaüstü uygulamasının **Code** sekmesinde (macOS ya da Windows; Windows'a özel adımlar 0b'de). Toplam: kurulum ~1 saat (çoğu indirme), kanal kurulumu ~30-45 dk,
 ilk bölüm birkaç oturum.
 
 ## 0. Hazırlık (bir kez, ~15 dk)
@@ -11,6 +11,22 @@ ilk bölüm birkaç oturum.
    Settings → API → **Create New Token**. İnen dosyayı kurulumda Claude sana nereye koyacağını söyleyecek. Anahtarı sohbete yapıştırma.
 3. Videoların duracağı **boş bir klasör** oluştur (ör. `Belgeler/Kanalim`). En az ~20 GB boş disk.
 
+## 0b. Yalnızca Windows (bir kez, ~10 dk)
+Stüdyo Windows'ta da çalışır; Claude komutları Git Bash'te çalıştırdığı için akış macOS'takiyle aynıdır. Önce şunlar:
+1. **Git for Windows** (Git Bash dahil): PowerShell'de `winget install --id Git.Git -e`.
+2. **Claude Code komut satırı** yerel kurulumla (claude.exe): PowerShell'de `irm https://claude.ai/install.ps1 | iex`.
+3. **Geliştirici Modu**: Ayarlar → Sistem → Geliştiriciler için → **Geliştirici Modu** açık. (Büyük video klasörünü kopyalamadan
+   bağlamak için gerekir.)
+4. **Uzun dosya yolları**: PowerShell'i **yönetici olarak** aç ve çalıştır:
+   ```
+   New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled -Value 1 -PropertyType DWORD -Force
+   ```
+5. Bilgisayarı yeniden başlat. Gerisini (Python, Node, ffmpeg, Whisper) `/content-studio:studio-setup` sorarak kurar; Windows'ta
+   Whisper'ı indirip klasöre yerleştirmeyi de o anlatır.
+
+Notlar: Windows'ta ses tasarımı (mlx) yoktur; ses Kaggle, ElevenLabs, Gemini ya da hazır seslerle üretilir. NVIDIA ekran kartı
+varsa ses bilgisayarda da hızlı üretilir. Bir şey takılırsa WSL2 (Windows içinde Ubuntu) da olur; `studio-setup` söyler.
+
 ## 1. Plugin'i ekle (~2 dk)
 Code sekmesinde yeni oturum aç (yerel oturum; bulut oturumunda plugin çalışmaz), klasör olarak az önce oluşturduğun klasörü seç.
 
@@ -18,7 +34,8 @@ Kurulum **uygulamanın içindeki terminalden** yapılır. Masaüstü uygulaması
 yazılan `/plugin ...` komutları bu plugin için çalışmıyor (2026-11 denemesi: menü yalnızca resmi dizini aratıyor).
 
 1. Oturumun başlık çubuğunda **Terminal**'e tıkla (ya da Ctrl+`).
-2. `claude --version` yaz. "command not found" derse önce Claude Code komut satırını kur, terminali kapatıp yeniden aç:
+2. `claude --version` yaz. "command not found" derse önce Claude Code komut satırını kur (Windows'ta 0b'deki PowerShell komutu),
+   terminali kapatıp yeniden aç:
    ```
    curl -fsSL https://claude.ai/install.sh | bash
    ```

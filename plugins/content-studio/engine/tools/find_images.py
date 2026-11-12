@@ -118,10 +118,10 @@ def get(ep: Path, scene: str, title: str, width: int, allow_sa: bool) -> dict:
         w = csv.writer(f)
         if new:
             w.writerow(["file", "source_url", "license", "attribution_required", "author", "notes"])
-        w.writerow([str(dst.relative_to(ep)), r["page"], r["license"], "yes" if r["attribution_required"] else "no", r["artist"],
+        w.writerow([dst.relative_to(ep).as_posix(), r["page"], r["license"], "yes" if r["attribution_required"] else "no", r["artist"],
                     f"{scene}; Wikimedia Commons; {r['license_url']}"])
     credit = f"{r['artist']} / {r['license']}" if r["attribution_required"] else ""
-    return {"file": str(dst.relative_to(ROOT / "content")), "license": r["license"], "author": r["artist"], "credit": credit,
+    return {"file": dst.relative_to(ROOT / "content").as_posix(), "license": r["license"], "author": r["artist"], "credit": credit,
             "bytes": len(data), "page": r["page"]}
 
 

@@ -19,8 +19,8 @@ Kanal: argümandaki id, yoksa kökteki `channel.yaml` (diğerleri `channels/<id>
 
 ## 0. Menüyü al (tek komut, kısa çıktı)
 ```
-python3 .studio/plugin/scripts/design_menu.py                  # tüm bölümler
-python3 .studio/plugin/scripts/design_menu.py looks --json     # tek bölüm, ayrıntılı
+voice/.venv-chatterbox/bin/python .studio/plugin/scripts/design_menu.py                  # tüm bölümler
+voice/.venv-chatterbox/bin/python .studio/plugin/scripts/design_menu.py looks --json     # tek bölüm, ayrıntılı
 ```
 `✓` = bizde Remotion'da hazır (hemen kullanılır) · `·` = tarifi var, ilk kullanımda bileşen yazılır (zaman alır; söyle).
 Kaynak dosyaları **yalnızca seçilen seçenek için** aç (token bütçesi): stil tarifi `recipe` yolu, kamera/geçiş ayrıntısı
@@ -41,7 +41,7 @@ Türkçe karşılık birlikte (kullanıcı terimleri öğrenmek istiyor olabilir
    (konu, duygu, malzeme, dönem; ör. "charity hands community warm craft"). Kullanıcı bir ad verdiyse ("Vox gibi", "Ghibli")
    onu da kat (takma adlar eşlenir). Sonra:
    ```
-   python3 .studio/plugin/scripts/design_menu.py looks --q "<kelimeler>" --pick 4
+   voice/.venv-chatterbox/bin/python .studio/plugin/scripts/design_menu.py looks --q "<kelimeler>" --pick 4
    ```
    Çıkan 4 aday farklı ailelerden gelir ve en az biri hazırdır (`✓`). Yalnızca hazır stillerle yetinme: tarifler (`·`) kanala daha
    özgün bir görünüş verebilir; maliyeti dürüstçe söyle (ilk kullanımda bileşeni yazılır, ~1-2 saat). Uymayan adayı

@@ -562,7 +562,7 @@ def main():
             gen_s = time.time() - t
             write_wav(out / "takes" / f"{sc['id']}.take{k}.raw.wav", raw, engine.sr)  # yeniden işleme için ham çıktı
             path = out / "takes" / f"{sc['id']}.take{k}.wav"
-            row = {"take": k, "seed": seed, "gen_s": round(gen_s, 1), "file": str(path.relative_to(ep_dir))}
+            row = {"take": k, "seed": seed, "gen_s": round(gen_s, 1), "file": path.relative_to(ep_dir).as_posix()}
             info = check_take(raw, engine.sr, {**sc, "spoken": spoken}, row, path, lang, post_filters, speaker,
                               use_asr=not args.no_asr)
             rows.append(info)
